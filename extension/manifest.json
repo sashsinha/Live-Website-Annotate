@@ -20,7 +20,7 @@
         },
         {
             "matches": ["*://*/*visconnect*"],
-            "css": ["index.css", "font-awesome.min.css"],
+            "css": ["index.css"],
             "js": ["d3.v5.min.js", "d3-selection-multi.v1.min.js", "content.js", "descvis-bundle.js", "draw.js"]
         }
     ],
@@ -30,11 +30,11 @@
         "64": "icons/icon_64.png"
     },
     "web_accessible_resources": [
-        "fonts/FontAwesome.otf",
-        "fonts/fontawesome-webfont.eot",
-        "fonts/fontawesome-webfont.svg",
-        "fonts/fontawesome-webfont.ttf",
-        "fonts/fontawesome-webfont.woff",
-        "fonts/fontawesome-webfont.woff2"
+        "icons/rubbish.png",
+        "icons/rubbish-white.png",
+        "icons/pen.png",
+        "icons/pen-white.png",
+        "icons/cursor.png",
+        "icons/cursor-white.png"
     ]
 }

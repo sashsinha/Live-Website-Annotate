@@ -29,21 +29,6 @@ let scrollHeight = Math.max(
 
 console.log(scrollHeight);
 
-// let pageHeight = 0;
-// // From https://stackoverflow.com/a/41181003
-// const findHighestNode = (nodesList) => {
-//     for (let i = nodesList.length - 1; i >= 0; i--) {
-//         if (nodesList[i].scrollHeight && nodesList[i].clientHeight) {
-//             let elHeight = Math.max(nodesList[i].scrollHeight, nodesList[i].clientHeight);
-//             pageHeight = Math.max(elHeight, pageHeight);
-//         }
-//         if (nodesList[i].childNodes.length) findHighestNode(nodesList[i].childNodes);
-//     }
-// };
-
-// findHighestNode(document.documentElement.childNodes);
-// console.log(pageHeight);
-
 const createCanvas = () => {
     if (!ranOnce) {
         var canvas = document.createElementNS("http://www.w3.org/2000/svg", "svg");

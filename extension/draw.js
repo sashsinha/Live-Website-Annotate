@@ -47,7 +47,7 @@
     ui = d3.select("#ui");
     palette = ui
         .append("g")
-        .attr("transform", "translate(" + (x - 135 + SWATCH_D / 2) + "," + (390 + SWATCH_D / 2) + ")")
+        .attr("transform", "translate(" + (x - 135 + SWATCH_D / 2) + "," + (340 + SWATCH_D / 2) + ")")
         .classed("color-palette", true);
 
     swatches = palette
@@ -64,98 +64,6 @@
             "#a6761d",
             "#666666"
         ]);
-
-    var icons2 = ["trash", "pencil", "warning"];
-
-    var hoveredStyle = { color: "white" };
-    var defaultStyle = { color: "#3E68B5", cursor: "pointer" };
-
-    d3.select("body")
-        .selectAll("i")
-        .data(icons2)
-        .enter()
-        .append("i")
-        .attr("class", function(d) {
-            return "icon fa fa-5x fa-" + d;
-        })
-        .styles(defaultStyle)
-        .on("mouseover", function() {
-            d3.select(this).styles(hoveredStyle);
-        })
-        .on("mouseout", function() {
-            d3.select(this).styles(defaultStyle);
-        })
-        .on("mouseup", function() {
-            d3.select(this).styles(hoveredStyle);
-        });
-
-    var trashStyle = {
-        padding: "30px 34px 30px 34px",
-        "border-radius": "10px",
-        stroke: "none",
-        width: "100px",
-        height: "100px",
-        cursor: "pointer",
-        position: "fixed",
-        bottom: "170px",
-        right: "50px",
-        "z-index": 2147483647,
-        "background-color": "rgba(220, 220, 220, 0.8)",
-        color: "#3E68B5",
-        "font-size": "40px"
-    };
-    d3.select(".fa-trash")
-        .styles(trashStyle)
-        .on("mousedown", function(d) {
-            drawing_data.lines = [];
-            return redraw();
-        });
-
-    var pointerEventsStyle = {
-        padding: "30px 34px 30px 34px",
-        "border-radius": "10px",
-        stroke: "none",
-        width: "100px",
-        height: "100px",
-        cursor: "pointer",
-        position: "fixed",
-        bottom: "293px",
-        right: "50px",
-        "z-index": 2147483647,
-        "background-color": "rgba(220, 220, 220, 0.8)",
-        color: "#3E68B5",
-        "font-size": "40px"
-    };
-    d3.select(".fa-pencil")
-        .classed("pointer", true)
-        .styles(pointerEventsStyle)
-        .on("mousedown", function(d) {
-            let c = document.getElementById("annotation-canvas");
-            if (!enabled) {
-                c.style["pointer-events"] = "stroke";
-                c.style["background"] = "rgb(255, 0, 0, 0.1)";
-                document.body.style["userSelect"] = "none";
-            } else {
-                c.style["pointer-events"] = "none";
-                c.style["background"] = "transparent";
-                document.body.style["userSelect"] = "auto";
-            }
-            enabled = !enabled;
-        });
-
-    let pointerEventsButton = document.getElementsByClassName("pointer")[0];
-
-    const pointerEventsToggle = _event => {
-        if (pointerEventsButton.classList.contains("fa-pencil")) {
-            pointerEventsButton.classList.remove("fa-pencil");
-            pointerEventsButton.classList.add("fa-mouse-pointer");
-        } else {
-            pointerEventsButton.classList.remove("fa-mouse-pointer");
-            pointerEventsButton.classList.add("fa-pencil");
-        }
-    };
-
-    pointerEventsButton.addEventListener("click", pointerEventsToggle);
 
     const swatchEnter = swatches.enter().append("circle");
 
@@ -188,22 +96,21 @@
         }
     });
 
-    var pallateStyle = {
-        padding: "30px 34px 30px 34px",
-        "border-radius": "10px",
-        stroke: "none",
-        width: "100px",
-        height: "230px",
-        cursor: "pointer",
-        position: "fixed",
-        bottom: "416px",
-        right: "50px",
-        "z-index": -1,
-        "background-color": "rgba(220, 220, 220, 0.8)",
-        color: "transparent",
-        "font-size": "40px"
-    };
-    d3.select(".fa-warning").styles(pallateStyle);
+    // var pallateStyle = {
+    //     padding: "30px 34px 30px 34px",
+    //     "border-radius": "10px",
+    //     stroke: "none",
+    //     width: "100px",
+    //     height: "230px",
+    //     cursor: "pointer",
+    //     position: "fixed",
+    //     bottom: "416px",
+    //     right: "50px",
+    //     "z-index": -1,
+    //     "background-color": "rgba(220, 220, 220, 0.8)",
+    //     color: "transparent",
+    //     "font-size": "40px"
+    // };
 
     drag = vc.drag(); // = d3.drag();
     var rafRequest = 0;
@@ -272,4 +179,73 @@
     // }
 
     // window.onresize = updateWindow;
+
+    setTimeout(function myFunction() {
+        b = document.body;
+
+        b.insertAdjacentHTML(
+            "afterend",
+            `<div id="palette-background">
+            </div>`
+        );
+
+        b.insertAdjacentHTML(
+            "afterend",
+            `<div id="pointer-events-btn">
+                <img id="pointer-events-btn-img" src=${chrome.runtime.getURL("icons/pen.png")} alt="delete"/>
+            </div>`
+        );
+        let pointerEventsImg = document.getElementById("pointer-events-btn-img");
+        pointerEventsImg.addEventListener("mouseover", function() {
+            if (!enabled) {
+                pointerEventsImg.src = `${chrome.runtime.getURL("icons/pen-white.png")}`;
+            } else {
+                 pointerEventsImg.src = `${chrome.runtime.getURL("icons/cursor-white.png")}`;
+            }
+            pointerEventsImg.style.cursor = "pointer";
+        });
+        pointerEventsImg.addEventListener("mouseout", function() {
+            if (!enabled) {
+                pointerEventsImg.src = `${chrome.runtime.getURL("icons/pen.png")}`;
+            } else {
+                pointerEventsImg.src = `${chrome.runtime.getURL("icons/cursor.png")}`;
+            }
+            pointerEventsImg.style.cursor = "pointer";
+        });
+        pointerEventsImg.addEventListener("click", _e => {
+            let c = document.getElementById("annotation-canvas");
+            if (!enabled) {
+                c.style["pointer-events"] = "stroke";
+                c.style["background"] = "rgb(255, 0, 0, 0.1)";
+                document.body.style["userSelect"] = "none";
+                pointerEventsImg.src = `${chrome.runtime.getURL("icons/cursor.png")}`;
+            } else {
+                c.style["pointer-events"] = "none";
+                c.style["background"] = "transparent";
+                document.body.style["userSelect"] = "auto";
+                pointerEventsImg.src = `${chrome.runtime.getURL("icons/pen.png")}`;
+            }
+            enabled = !enabled;
+        });
+
+        b.insertAdjacentHTML(
+            "afterend",
+            `<div id="trash-btn">
+                <img id="trash-btn-img" src=${chrome.runtime.getURL("icons/rubbish.png")} alt="delete"/>
+            </div>`
+        );
+        let trashBtnImg = document.getElementById("trash-btn-img");
+        trashBtnImg.addEventListener("mouseover", function() {
+            trashBtnImg.src = `${chrome.runtime.getURL("icons/rubbish-white.png")}`;
+            trashBtnImg.style.cursor = "pointer";
+        });
+        trashBtnImg.addEventListener("mouseout", function() {
+            trashBtnImg.src = `${chrome.runtime.getURL("icons/rubbish.png")}`;
+            trashBtnImg.style.cursor = "pointer";
+        });
+        trashBtnImg.addEventListener("click", _e => {
+            drawing_data.lines = [];
+            return redraw();
+        });
+    }, 100);
 }.call(this));

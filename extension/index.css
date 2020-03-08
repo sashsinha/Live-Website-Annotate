@@ -59,32 +59,80 @@
     cursor: pointer;
 }
 
-.trash {
-    width: 100px;
-    height: 100px;
-    pointer-events: all;
-
-    font-family: FontAwesome;
-    fill: #333;
-    font-size: 32px;
-    text-anchor: middle;
-
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.trash:hover {
-    fill: black;
-    cursor: pointer;
-}
-
 .line {
     fill: none;
     stroke-width: 2px;
     stroke-linejoin: round;
     stroke-linecap: round;
+}
+
+#trash-btn {
+    position: fixed;
+    height: 100px !important;
+    width: 100px !important;
+    z-index: 2147483647;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    right: 50px !important;
+    bottom: 175px !important;
+    background: rgba(220, 220, 220, 0.8) !important;
+    color: white !important;
+    line-height: 1.2em;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    transition: height 500ms;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#trash-btn-img {
+    height: 50px;
+    width: 50px;
+}
+
+#pointer-events-btn {
+    position: fixed;
+    height: 100px !important;
+    width: 100px !important;
+    z-index: 2147483647;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    right: 50px !important;
+    bottom: 300px !important;
+    background: rgba(220, 220, 220, 0.8) !important;
+    color: white !important;
+    line-height: 1.2em;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    transition: height 500ms;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#pointer-events-btn-img {
+    height: 50px;
+    width: 50px;
+}
+
+#palette-background {
+    position: fixed;
+    height: 218px !important;
+    width: 100px !important;
+    z-index: 2147483645;
+    right: 50px !important;
+    bottom: 425px !important;
+    background: rgba(220, 220, 220, 0.8) !important;
+    line-height: 1.2em;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    transition: height 500ms;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
