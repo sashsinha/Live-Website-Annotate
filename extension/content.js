@@ -27,6 +27,23 @@ let scrollHeight = Math.max(
     document.documentElement.clientHeight
 );
 
+console.log(scrollHeight);
+
+// let pageHeight = 0;
+// // From https://stackoverflow.com/a/41181003
+// const findHighestNode = (nodesList) => {
+//     for (let i = nodesList.length - 1; i >= 0; i--) {
+//         if (nodesList[i].scrollHeight && nodesList[i].clientHeight) {
+//             let elHeight = Math.max(nodesList[i].scrollHeight, nodesList[i].clientHeight);
+//             pageHeight = Math.max(elHeight, pageHeight);
+//         }
+//         if (nodesList[i].childNodes.length) findHighestNode(nodesList[i].childNodes);
+//     }
+// };
+
+// findHighestNode(document.documentElement.childNodes);
+// console.log(pageHeight);
+
 const createCanvas = () => {
     if (!ranOnce) {
         var canvas = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -45,24 +62,24 @@ const createCanvas = () => {
 
 createCanvas();
 
-var w = window,
-    d = document,
-    e = d.documentElement,
-    g = d.getElementsByTagName("body")[0],
-    x = w.innerWidth || e.clientWidth || g.clientWidth,
-    y = w.innerHeight || e.clientHeight || g.clientHeight;
+// var w = window,
+//     d = document,
+//     e = d.documentElement,
+//     g = d.getElementsByTagName("body")[0],
+//     x = w.innerWidth || e.clientWidth || g.clientWidth,
+//     y = w.innerHeight || e.clientHeight || g.clientHeight;
 
-function updateWindow() {
-    x = w.innerWidth || e.clientWidth || g.clientWidth;
-    x = Math.max(x, scrollWidth);
-    y = w.innerHeight || e.clientHeight || g.clientHeight;
-    y = Math.max(y, scrollHeight);
-    let c = document.getElementById("annotation-canvas");
-    c.setAttribute("width", `${x}px`);
-    c.setAttribute("height", `${y}px`);
-    let u = document.getElementById("ui");
-    u.setAttribute("width", `${x}px`);
-    u.setAttribute("height", `${y}px`);
-}
+// function updateWindow() {
+//     x = w.innerWidth || e.clientWidth || g.clientWidth;
+//     x = Math.max(x, scrollWidth);
+//     y = w.innerHeight || e.clientHeight || g.clientHeight;
+//     y = Math.max(y, scrollHeight);
+//     let c = document.getElementById("annotation-canvas");
+//     c.setAttribute("width", `${x}px`);
+//     c.setAttribute("height", `${y}px`);
+//     let u = document.getElementById("ui");
+//     u.setAttribute("width", `${x}px`);
+//     u.setAttribute("height", `${y}px`);
+// }
 
-window.onresize = updateWindow;
+// window.onresize = updateWindow;

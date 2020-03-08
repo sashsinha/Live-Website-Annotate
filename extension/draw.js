@@ -47,7 +47,7 @@
     ui = d3.select("#ui");
     palette = ui
         .append("g")
-        .attr("transform", "translate(" + (x - 135 + SWATCH_D / 2) + "," + (y - 935 + SWATCH_D / 2) + ")")
+        .attr("transform", "translate(" + (x - 135 + SWATCH_D / 2) + "," + (390 + SWATCH_D / 2) + ")")
         .classed("color-palette", true);
 
     swatches = palette
@@ -261,15 +261,15 @@
 
     redraw();
 
-    function updateWindow() {
-        x = w.innerWidth || e.clientWidth || g.clientWidth;
-        x = Math.max(x, scrollWidth);
-        y = w.innerHeight || e.clientHeight || g.clientHeight;
-        y = Math.max(y, scrollHeight);
-        d3.select(".color-palette")
-            .attr("transform", "translate(" + (x - 135 + SWATCH_D / 2) + "," + (y - 935 + SWATCH_D / 2) + ")")
-            .classed("color-palette", true);
-    }
+    // function updateWindow() {
+    //     x = w.innerWidth || e.clientWidth || g.clientWidth;
+    //     x = Math.max(x, scrollWidth);
+    //     y = w.innerHeight || e.clientHeight || g.clientHeight;
+    //     y = Math.max(y, scrollHeight);
+    //     d3.select(".color-palette")
+    //         .attr("transform", "translate(" + (x - 135 + SWATCH_D / 2) + "," + (y - 935 + SWATCH_D / 2) + ")")
+    //         .classed("color-palette", true);
+    // }
 
-    window.onresize = updateWindow;
+    // window.onresize = updateWindow;
 }.call(this));
