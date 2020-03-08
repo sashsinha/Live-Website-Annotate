@@ -47,7 +47,14 @@
     ui = d3.select("#ui");
     palette = ui
         .append("g")
-        .attr("transform", "translate(" + (x - 135 + SWATCH_D / 2) + "," + (340 + SWATCH_D / 2) + ")")
+        .attr(
+            "transform",
+            "translate(" +
+                (window.innerWidth - 135 + SWATCH_D / 2) +
+                "," +
+                (window.innerHeight - 630 + SWATCH_D / 2) +
+                ")"
+        )
         .classed("color-palette", true);
 
     swatches = palette
@@ -200,7 +207,7 @@
             if (!enabled) {
                 pointerEventsImg.src = `${chrome.runtime.getURL("icons/pen-white.png")}`;
             } else {
-                 pointerEventsImg.src = `${chrome.runtime.getURL("icons/cursor-white.png")}`;
+                pointerEventsImg.src = `${chrome.runtime.getURL("icons/cursor-white.png")}`;
             }
             pointerEventsImg.style.cursor = "pointer";
         });
@@ -247,5 +254,19 @@
             drawing_data.lines = [];
             return redraw();
         });
+
+        const updatePalette = () => {
+            d3.select("#ui")
+                .selectAll("g")
+                .attr(
+                    "transform",
+                    "translate(" +
+                        (window.innerWidth - 135 + SWATCH_D / 2) +
+                        "," +
+                        (window.innerHeight - 630 + SWATCH_D / 2) +
+                        ")"
+                );
+        }
+        window.onresize = updatePalette;
     }, 100);
 }.call(this));
