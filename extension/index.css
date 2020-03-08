@@ -1,4 +1,5 @@
 #desc-container {
+    padding: 0px !important;
     height: 100px !important;
     width: 100px !important;
     z-index: 2147483647;
@@ -67,6 +68,7 @@
 }
 
 #trash-btn {
+    padding: 0px !important;
     position: fixed;
     height: 100px !important;
     width: 100px !important;
@@ -93,6 +95,7 @@
 }
 
 #pointer-events-btn {
+    padding: 0px !important;
     position: fixed;
     height: 100px !important;
     width: 100px !important;
@@ -119,6 +122,7 @@
 }
 
 #palette-background {
+    padding: 0px !important;
     position: fixed;
     height: 218px !important;
     width: 100px !important;

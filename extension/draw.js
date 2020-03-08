@@ -50,7 +50,7 @@
         .attr(
             "transform",
             "translate(" +
-                (window.innerWidth - 135 + SWATCH_D / 2) +
+                (window.innerWidth - 132 + SWATCH_D / 2) +
                 "," +
                 (window.innerHeight - 630 + SWATCH_D / 2) +
                 ")"
@@ -261,7 +261,7 @@
                 .attr(
                     "transform",
                     "translate(" +
-                        (window.innerWidth - 135 + SWATCH_D / 2) +
+                        (window.innerWidth - 132 + SWATCH_D / 2) +
                         "," +
                         (window.innerHeight - 630 + SWATCH_D / 2) +
                         ")"
