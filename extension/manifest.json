@@ -1,0 +1,40 @@
+{
+    "name": "Live Website Annotate",
+    "version": "1.1.0",
+    "description": "Annotate websites in real time along with others",
+    "manifest_version": 2,
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true
+    },
+    "browser_action": {
+        "default_title": "Live Website Annotate",
+        "default_icon": "icons/icon_round.png"
+    },
+    "permissions": ["activeTab"],
+    "content_scripts": [
+        {
+            "matches": ["*://*/*visconnect*"],
+            "run_at": "document_start",
+            "js": ["peerjs.1.0.4.min.js"]
+        },
+        {
+            "matches": ["*://*/*visconnect*"],
+            "css": ["index.css", "font-awesome.min.css"],
+            "js": ["d3.v5.min.js", "d3-selection-multi.v1.min.js", "content.js", "descvis-bundle.js", "draw.js"]
+        }
+    ],
+    "icons": {
+        "512": "icons/icon_512.png",
+        "128": "icons/icon_128.png",
+        "64": "icons/icon_64.png"
+    },
+    "web_accessible_resources": [
+        "fonts/FontAwesome.otf",
+        "fonts/fontawesome-webfont.eot",
+        "fonts/fontawesome-webfont.svg",
+        "fonts/fontawesome-webfont.ttf",
+        "fonts/fontawesome-webfont.woff",
+        "fonts/fontawesome-webfont.woff2"
+    ]
+}
