@@ -44,7 +44,7 @@
 
     canvas = d3.select("#annotation-canvas");
     lines_layer = canvas.append("g");
-    ui = d3.select("#ui");
+    ui = d3.select("#annotation-ui");
     palette = ui
         .append("g")
         .attr(
@@ -191,13 +191,13 @@
         b = document.body;
 
         b.insertAdjacentHTML(
-            "afterend",
+            "afterbegin",
             `<div id="palette-background">
             </div>`
         );
 
         b.insertAdjacentHTML(
-            "afterend",
+            "beforeend",
             `<div id="pointer-events-btn">
                 <img id="pointer-events-btn-img" src=${chrome.runtime.getURL("icons/pen.png")} alt="delete"/>
             </div>`
@@ -236,7 +236,7 @@
         });
 
         b.insertAdjacentHTML(
-            "afterend",
+            "beforeend",
             `<div id="trash-btn">
                 <img id="trash-btn-img" src=${chrome.runtime.getURL("icons/rubbish.png")} alt="delete"/>
             </div>`
@@ -256,7 +256,7 @@
         });
 
         const updatePalette = () => {
-            d3.select("#ui")
+            d3.select("#annotation-ui")
                 .selectAll("g")
                 .attr(
                     "transform",
