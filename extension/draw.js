@@ -8,9 +8,9 @@
         e = d.documentElement,
         g = d.getElementsByTagName("body")[0],
         x = w.innerWidth || e.clientWidth || g.clientWidth;
-    x = Math.max(x, scrollWidth);
-    y = w.innerHeight || e.clientHeight || g.clientHeight;
-    y = Math.max(y, scrollHeight);
+        //x = Math.max(x, scrollWidth);
+        y = w.innerHeight || e.clientHeight || g.clientHeight;
+        //y = Math.max(y, scrollHeight);
 
     var SWATCH_D,
         active_color,
@@ -50,9 +50,9 @@
         .attr(
             "transform",
             "translate(" +
-                (window.innerWidth - 132 + SWATCH_D / 2) +
+                (document.documentElement.clientWidth - 132 + SWATCH_D / 2) +
                 "," +
-                (window.innerHeight - 630 + SWATCH_D / 2) +
+                (document.documentElement.clientHeight - 630 + SWATCH_D / 2) +
                 ")"
         )
         .classed("color-palette", true);
@@ -261,9 +261,9 @@
                 .attr(
                     "transform",
                     "translate(" +
-                        (window.innerWidth - 132 + SWATCH_D / 2) +
+                        (document.documentElement.clientWidth - 132 + SWATCH_D / 2) +
                         "," +
-                        (window.innerHeight - 630 + SWATCH_D / 2) +
+                        (document.documentElement.clientHeight - 630 + SWATCH_D / 2) +
                         ")"
                 );
         }
