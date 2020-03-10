@@ -3,15 +3,6 @@
 (function() {
     let enabled = false; // drawing disabled
 
-    var w = window,
-        d = document,
-        e = d.documentElement,
-        g = d.getElementsByTagName("body")[0],
-        x = w.innerWidth || e.clientWidth || g.clientWidth;
-        //x = Math.max(x, scrollWidth);
-        y = w.innerHeight || e.clientHeight || g.clientHeight;
-        //y = Math.max(y, scrollHeight);
-
     var SWATCH_D,
         active_color,
         active_line,
@@ -103,22 +94,6 @@
         }
     });
 
-    // var pallateStyle = {
-    //     padding: "30px 34px 30px 34px",
-    //     "border-radius": "10px",
-    //     stroke: "none",
-    //     width: "100px",
-    //     height: "230px",
-    //     cursor: "pointer",
-    //     position: "fixed",
-    //     bottom: "416px",
-    //     right: "50px",
-    //     "z-index": -1,
-    //     "background-color": "rgba(220, 220, 220, 0.8)",
-    //     color: "transparent",
-    //     "font-size": "40px"
-    // };
-
     drag = vc.drag(); // = d3.drag();
     var rafRequest = 0;
 
@@ -174,18 +149,6 @@
     };
 
     redraw();
-
-    // function updateWindow() {
-    //     x = w.innerWidth || e.clientWidth || g.clientWidth;
-    //     x = Math.max(x, scrollWidth);
-    //     y = w.innerHeight || e.clientHeight || g.clientHeight;
-    //     y = Math.max(y, scrollHeight);
-    //     d3.select(".color-palette")
-    //         .attr("transform", "translate(" + (x - 135 + SWATCH_D / 2) + "," + (y - 935 + SWATCH_D / 2) + ")")
-    //         .classed("color-palette", true);
-    // }
-
-    // window.onresize = updateWindow;
 
     setTimeout(function myFunction() {
         b = document.body;
@@ -266,7 +229,7 @@
                         (document.documentElement.clientHeight - 630 + SWATCH_D / 2) +
                         ")"
                 );
-        }
+        };
         window.onresize = updatePalette;
     }, 100);
 }.call(this));
