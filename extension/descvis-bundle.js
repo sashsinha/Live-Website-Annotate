@@ -35,8 +35,9 @@ var DescUi = /** @class */ (function () {
     };
     DescUi.prototype.mouseMoved = function (originalEvent) {
         var event = originalEvent;
+        var ownId = this.descvis.protocol.communication.id;
         var collaborator = event['collaboratorId'];
-        if (!collaborator || this.descvis.protocol.communication.id === collaborator) {
+        if (!collaborator || !ownId || ownId === collaborator) {
             return;
         }
         var cursor = this.getCursor(collaborator);
@@ -45,9 +46,10 @@ var DescUi = /** @class */ (function () {
     };
     DescUi.prototype.eventCancelled = function (event) {
         clearTimeout(this.cursorResetTimeout);
-        document.body.style.cursor = 'not-allowed';
+        var target = document.querySelector(event.target) || document.body;
+        target.style.setProperty('cursor', 'not-allowed', 'important');
         this.cursorResetTimeout = window.setTimeout(function () {
-            document.body.style.cursor = '';
+            target.style.removeProperty('cursor');
         }, 50);
     };
     DescUi.prototype.updateConnections = function () {
@@ -198,10 +200,22 @@ var DescListener = /** @class */ (function () {
                 obj[key] = val;
             }
         }
+        if (obj.clientX) {
+            obj.clientX = obj.clientX + window.scrollX;
+        }
+        if (obj.x) {
+            obj.x = obj.x + window.scrollX;
+        }
+        if (obj.clientY) {
+            obj.clientY = obj.clientY + window.scrollY;
+        }
+        if (obj.y) {
+            obj.y = obj.y + window.scrollY;
+        }
         if (window.TouchEvent && e instanceof TouchEvent && e.touches && e.touches.length) {
             for (var _i = 0, _a = e.touches; _i < _a.length; _i++) {
                 var touch = _a[_i];
-                obj.touches.push({ clientX: touch.clientX, clientY: touch.clientY });
+                obj.touches.push({ clientX: touch.clientX + window.scrollX, clientY: touch.clientY + window.scrollX });
             }
         }
         var target = this.getElementSelector(e.target);
@@ -262,15 +276,33 @@ function recreateEvent(eventObject, target) {
     var targetSelector = eventObject.target;
     var e;
     if (eventObject.type.substr(0, 5) === 'touch') {
-        e = document.createEvent('TouchEvent');
-        e.initEvent(eventObject.type, true, false);
-        for (var prop in eventObject) {
-            if (prop !== 'isTrusted' && eventObject.hasOwnProperty(prop)) {
-                Object.defineProperty(e, prop, {
-                    writable: true,
-                    value: eventObject[prop],
-                });
+        try {
+            e = document.createEvent('TouchEvent');
+            e.initEvent(eventObject.type, true, false);
+            for (var prop in eventObject) {
+                if (prop !== 'isTrusted' && eventObject.hasOwnProperty(prop)) {
+                    Object.defineProperty(e, prop, {
+                        writable: true,
+                        value: eventObject[prop],
+                    });
+                }
             }
+        }
+        catch (error) {
+            // Touch probably not supported.
+            var newType = 'mousemove';
+            if (eventObject.type === 'touchstart') {
+                newType = 'mousedown';
+            }
+            else if (eventObject.type === 'touchend') {
+                newType = 'mouseup';
+            }
+            eventObject.type = newType;
+            if (eventObject.touches[0]) {
+                eventObject.clientX = eventObject.touches[0].clientX;
+                eventObject.clientY = eventObject.touches[0].clientY;
+            }
+            e = new MouseEvent(eventObject.type, eventObject);
         }
         //e = new TouchEvent(eventObject.type, eventObject as any);
     }
@@ -1181,6 +1213,10 @@ var PeerjsNetwork = /** @class */ (function () {
     PeerjsNetwork.prototype.init = function (onOpen, onConnection, onDisconnection) {
         this.onOpen = onOpen;
         this.peer = new Peer({
+            host: 'michaschwab.de',
+            port: 9000,
+            secure: true,
+            path: '/visconnect',
             config: { 'iceServers': [
                     { urls: 'stun:stun.l.google.com:19302' },
                     {
@@ -1702,7 +1738,7 @@ var DescVis = /** @class */ (function () {
         this.svg = svg;
         this.safeMode = safeMode;
         this.onEventCancelled = function () { };
-        var parts = window.location.href.match(/\?visconnectid=([a-z0-9]+)/);
+        var parts = window.location.href.match(/\?visconnectid=([a-z0-9\-]+)/);
         var leaderId = parts ? parts[1] : '';
         var isLeader = !leaderId;
         var Protocol = isLeader ? DescLeaderProtocol : DescProtocol;
@@ -1712,6 +1748,7 @@ var DescVis = /** @class */ (function () {
     }
     DescVis.prototype.localEvent = function (stripped, event) {
         stopPropagation(event);
+        event.preventDefault();
         this.protocol.localEvent(stripped);
     };
     DescVis.prototype.cancelEvent = function (event) {
@@ -1735,28 +1772,70 @@ var VisConnectUtil = /** @class */ (function () {
     }
     VisConnectUtil.drag = function () {
         var data = {
-            element: null,
-            onStart: function () { },
-            onEnd: function () { },
-            onDrag: function () { }
+            elements: null,
+            draggingElements: {},
+            onStart: function (data) { },
+            onEnd: function (data) { },
+            onDrag: function (data) { }
+        };
+        var dragStart = function (element) {
+            return function (e) {
+                var event = e;
+                if (!setCustomEvent(event)) {
+                    return;
+                }
+                data.draggingElements[event.collaboratorId] = element;
+                data.onStart.call(element, element['__data__']);
+            };
+        };
+        var dragMove = function (e) {
+            var event = e;
+            if (!setCustomEvent(event)) {
+                return;
+            }
+            var element = data.draggingElements[event.collaboratorId];
+            if (element) {
+                data.onDrag.call(element, element['__data__']);
+            }
+        };
+        var dragEnd = function (e) {
+            var event = e;
+            if (!setCustomEvent(event)) {
+                return;
+            }
+            var element = data.draggingElements[event.collaboratorId];
+            if (element) {
+                delete data.draggingElements[event.collaboratorId];
+                data.onEnd.call(element, element['__data__']);
+            }
         };
         var drag = function (selection) {
-            data.element = selection._groups[0][0];
-            data.element.addEventListener('mousedown', function (e) {
-                var event = e;
-                window['d3'].event = { sourceEvent: event };
-                data.onStart.call(data.element);
-            });
-            window.addEventListener('mousemove', function (e) {
-                var event = e;
-                window['d3'].event = { sourceEvent: event };
-                data.onDrag.call(data.element);
-            });
-            window.addEventListener('mouseup', function (e) {
-                var event = e;
-                window['d3'].event = { sourceEvent: event };
-                data.onEnd.call(data.element);
-            });
+            var elements = selection._groups[0].filter(function (element) { return element; });
+            if (!elements.length) {
+                return;
+            }
+            data.elements = elements;
+            for (var _i = 0, _a = data.elements; _i < _a.length; _i++) {
+                var element = _a[_i];
+                element.addEventListener('mousedown', dragStart(element));
+                element.addEventListener('touchstart', dragStart(element));
+            }
+            window.addEventListener('mousemove', dragMove);
+            window.addEventListener('touchmove', dragMove);
+            window.addEventListener('mouseup', dragEnd);
+            window.addEventListener('touchend', dragEnd);
+        };
+        var setCustomEvent = function (event) {
+            var pos = point(event);
+            if (!pos) {
+                return false;
+            }
+            window['d3'].event = {
+                sourceEvent: event,
+                x: pos.x,
+                y: pos.y,
+            };
+            return true;
         };
         drag.on = function (type, callback) {
             if (type === 'start') {
@@ -1771,15 +1850,39 @@ var VisConnectUtil = /** @class */ (function () {
             else {
                 console.error('Drag type ', type, ' not defined.');
             }
+            return drag;
         };
         return drag;
     };
+    VisConnectUtil.mouse = function (node) {
+        var coords = window['d3'].mouse(node);
+        return [coords[0] - window.scrollX, coords[1] - window.scrollY];
+    };
     return VisConnectUtil;
 }());
+// Adapted from D3.js
+function point(event) {
+    var node = event.target;
+    var svg = node.ownerSVGElement || node;
+    var position = event instanceof MouseEvent ? event : event.touches[0];
+    if (!position) {
+        console.warn(event);
+        return null;
+    }
+    if (svg.createSVGPoint) {
+        var point_1 = svg.createSVGPoint();
+        point_1.x = position.clientX;
+        point_1.y = position.clientY;
+        point_1 = point_1.matrixTransform(node.getScreenCTM().inverse());
+        return { x: point_1.x, y: point_1.y };
+    }
+    var rect = node.getBoundingClientRect();
+    return { x: position.clientX - rect.left - node.clientLeft, y: position.clientY - rect.top - node.clientTop };
+}
 
 var visconnect;
 var visconnectUi;
-window.vc = { drag: VisConnectUtil.drag };
+window.vc = { drag: VisConnectUtil.drag, mouse: VisConnectUtil.mouse };
 console.log('init vislink');
 disableStopPropagation();
 delayAddEventListener().then(function () {
