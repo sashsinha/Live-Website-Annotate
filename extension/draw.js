@@ -108,7 +108,7 @@
 
     drag.on("drag", function() {
         if (active_line[d3.event.sourceEvent.collaboratorId]) {
-            active_line[d3.event.sourceEvent.collaboratorId].points.push(d3.mouse(this));
+            active_line[d3.event.sourceEvent.collaboratorId].points.push(vc.mouse(this));
             if (!rafRequest) {
                 rafRequest = requestAnimationFrame(redraw.bind(this));
             }
