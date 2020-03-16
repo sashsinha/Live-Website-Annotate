@@ -154,7 +154,7 @@
         b = document.body;
 
         b.insertAdjacentHTML(
-            "afterbegin",
+            "beforeend",
             `<div id="palette-background">
             </div>`
         );
