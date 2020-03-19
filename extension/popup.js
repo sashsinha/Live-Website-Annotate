@@ -90,6 +90,14 @@ const myFunction = () => {
     }, 3000);
 };
 
+const myFunction2 = () => {
+    var z = document.getElementById("snackbar2");
+    z.className = "show";
+    setTimeout(() => {
+        z.className = z.className.replace("show", "");
+    }, 3000);
+};
+
 const checkBrowserWindowSize = () => {
     if (!window.tabBaseURL.includes("chrome")) {
         chrome.tabs.sendMessage(window.currentTab.id, { action: "getWindowSize" }, response => {
@@ -133,6 +141,8 @@ const checkBrowserWindowSize = () => {
                 }
             }
         });
+    } else {
+        myFunction2();
     }
 };
 

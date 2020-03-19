@@ -48,6 +48,13 @@
             </svg>
             Resize browser window to guidelines
         </div>
+        <div id="snackbar2">
+            <svg class="crossmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="crossmark__circle" cx="26" cy="26" r="25" fill="none" />
+                <path class="crossmark__check" fill="none" d="M16 16 36 36 M36 16 16 36" />
+            </svg>
+            Navigate to a publicly hosted domain 
+        </div>
     </div>
     <script src="popup.js"></script>
     </div>
@@ -248,7 +255,7 @@
     }
 
     /* Snackbar */
-    #snackbar {
+    #snackbar, #snackbar2 {
         visibility: hidden;
         background-color: #333;
         color: #fff;
@@ -264,7 +271,7 @@
         width: 90%;
     }
 
-    #snackbar.show {
+    #snackbar.show, #snackbar2.show {
         visibility: visible;
         -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
         animation: fadein 0.5s, fadeout 0.5s 2.5s;
