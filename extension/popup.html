@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Test</title>
+    <link rel="stylesheet" href="materialize.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="title">
+            <div class="icon">
+                <img src="/icons/icon.svg" alt="Live Web Page Annotate Icon" />
+            </div>
+            <span class="title-text">Live Website Annotate</span>
+        </div>
+
+        <div id="resize-menu">
+            <img id="resize-gif" src="https://i.imgur.com/pEAZPkl.gif" loop=infinite width='300' height='150' />
+
+            <div class=resize-info>
+                <svg class="crossmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="crossmark__circle" cx="26" cy="26" r="25" fill="none" />
+                    <path class="crossmark__check" fill="none" d="M16 16 36 36 M36 16 16 36" />
+                </svg>
+                Resize browser window to guidelines
+            </div>
+        </div>
+
+        <div id=valid-menu>
+            <div class="input-field col s12">
+                <input disabled id="textarea1" class="materialize-textarea"></input>
+                <label id="textarea1label" for="textarea1">🔗Enter a VisLink</label>
+            </div>
+            <a href="#" id="connect-to-vislink"
+                class="disabled btn-large waves-effect waves-teal-lighten-5 waves-ripple"
+                disabled="disabled">Connect</a>
+            <p id="or">or</p>
+            <a href="#" id="annotate-as-leader"
+                class="disabled btn-large waves-effect waves-teal-lighten-5 waves-ripple" disabled="disabled">Start
+                Annotating as Leader</a>
+        </div>
+        <div id="snackbar">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+            </svg>
+            Resize browser window to guidelines
+        </div>
+    </div>
+    <script src="popup.js"></script>
+    </div>
+</body>
+
+</html>
+
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        text-align: center;
+        width: 450px;
+        height: 400px;
+        padding: 5px;
+        font-family: "Montserrat";
+        font-size: medium;
+    }
+
+    .icon {
+        padding: 5px;
+    }
+
+    .icon svg {
+        height: 2em;
+        width: 2em;
+    }
+
+    .title {
+        font-size: x-large;
+        font-weight: bold;
+        color: #1a73e8;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+        border-bottom: 1px solid #F0F0F0;
+        margin-bottom: 10px;
+    }
+
+    .title-text {
+        padding: 5px;
+    }
+
+    #resize-menu {
+        display: none;
+        margin: 30px;
+    }
+
+    .input-field input:focus+label {
+        color: #1a73e8 !important;
+    }
+
+    .row .input-field input:focus {
+        border-bottom: 1px solid #1a73e8 !important;
+        box-shadow: 0 1px 0 0 #1a73e8 !important
+    }
+
+
+    #valid-menu {
+        display: none;
+        margin: 0px;
+        padding: 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .resize-info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 30px;
+        font-size: 17px;
+    }
+
+    #or {
+        margin: 20px;
+    }
+
+    /* Animated Check mark from: https://codepen.io/haniotis/pen/KwvYLO */
+    @keyframes stroke {
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    @keyframes scale {
+
+        0%,
+        100% {
+            transform: none;
+        }
+
+        50% {
+            transform: scale3d(1.1, 1.1, 1);
+        }
+    }
+
+
+    .checkmark__circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+        stroke: #7ac142;
+        fill: none;
+        animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+
+    .checkmark {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        stroke-width: 2;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        margin: 10px;
+        box-shadow: inset 0px 0px 0px #7ac142;
+        animation: fill_checkmark .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    }
+
+    .checkmark__check {
+        transform-origin: 50% 50%;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    }
+
+    @keyframes fill_checkmark {
+        100% {
+            box-shadow: inset 0px 0px 0px 30px #7ac142;
+        }
+    }
+
+    .crossmark__circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+        stroke: #f44336;
+        fill: none;
+        animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+
+    .crossmark {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: block;
+        stroke-width: 2;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        margin: 10px;
+        box-shadow: inset 0px 0px 0px #f44336;
+        animation: fill_crossmark .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    }
+
+    .crossmark__check {
+        transform-origin: 50% 50%;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    }
+
+    @keyframes fill_crossmark {
+        100% {
+            box-shadow: inset 0px 0px 0px 30px #f44336;
+        }
+    }
+
+    .waves-effect.waves-teal-lighten-5.waves-ripple {
+        background-color: #1a73e8;
+    }
+
+    .waves-effect.waves-teal-lighten-5.waves-ripple:hover {
+        background-color: #1a73e8d0
+    }
+
+    input {
+        width: 80vw !important;
+        margin: 0 0 0 0 !important;
+        resize: none;
+        white-space: nowrap;
+        overflow-x: scroll;
+    }
+
+    /* Snackbar */
+    #snackbar {
+        visibility: hidden;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        position: fixed;
+        z-index: 1;
+        bottom: 30px;
+        font-size: 17px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+    }
+
+    #snackbar.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @-webkit-keyframes fadein {
+        from {
+            bottom: 0;
+            opacity: 0;
+        }
+
+        to {
+            bottom: 30px;
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadein {
+        from {
+            bottom: 0;
+            opacity: 0;
+        }
+
+        to {
+            bottom: 30px;
+            opacity: 1;
+        }
+    }
+
+    @-webkit-keyframes fadeout {
+        from {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        to {
+            bottom: 0;
+            opacity: 0;
+        }
+    }
+
+    @keyframes fadeout {
+        from {
+            bottom: 30px;
+            opacity: 1;
+        }
+
+        to {
+            bottom: 0;
+            opacity: 0;
+        }
+    }
+</style>

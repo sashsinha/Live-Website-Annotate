@@ -54,22 +54,6 @@ var w = window,
     x = w.innerWidth || e.clientWidth || g.clientWidth,
     y = w.innerHeight || e.clientHeight || g.clientHeight;
 
-// function updateWindow() {
-//     console.log("Window resized");
-//     x = w.innerWidth || e.clientWidth || g.clientWidth;
-//     x = Math.max(x, scrollWidth);
-//     y = w.innerHeight || e.clientHeight || g.clientHeight;
-//     y = Math.max(y, scrollHeight);
-//     let c = document.getElementById("annotation-canvas");
-//     c.setAttribute("width", `${x}px`);
-//     c.setAttribute("height", `${y}px`);
-//     let u = document.getElementById("annotation-ui");
-//     u.setAttribute("width", `${x}px`);
-//     u.setAttribute("height", `${y}px`);
-// }
-
-// window.addEventListener("resize", updateWindow());
-
 var ro = new ResizeObserver(entries => {
     for (let entry of entries) {
         const cr = entry.contentRect;

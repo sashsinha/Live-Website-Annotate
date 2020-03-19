@@ -1,6 +1,6 @@
 // Based on the following bl.ock: http://bl.ocks.org/nitaku/d79632a53187f8e92b15
 
-(function() {
+(function () {
     let enabled = false; // drawing disabled
 
     var SWATCH_D,
@@ -41,10 +41,10 @@
         .attr(
             "transform",
             "translate(" +
-                (document.documentElement.clientWidth - 132 + SWATCH_D / 2) +
-                "," +
-                (document.documentElement.clientHeight - 630 + SWATCH_D / 2) +
-                ")"
+            (document.documentElement.clientWidth - 132 + SWATCH_D / 2) +
+            "," +
+            (document.documentElement.clientHeight - 630 + SWATCH_D / 2) +
+            ")"
         )
         .classed("color-palette", true);
 
@@ -67,10 +67,10 @@
 
     swatchEnter
         .attr("class", "swatch")
-        .attr("cy", function(d, i) {
+        .attr("cy", function (d, i) {
             return (i * (SWATCH_D + 4)) / 2;
         })
-        .attr("cx", function(d, i) {
+        .attr("cx", function (d, i) {
             if (i % 2) {
                 return SWATCH_D;
             } else {
@@ -79,7 +79,7 @@
         })
         .attr("r", SWATCH_D / 2)
         .attr("fill", d => d)
-        .on("click", function(d) {
+        .on("click", function (d) {
             active_color[d3.event.collaboratorId] = d;
             if (d3.event.isLocalEvent) {
                 active_local_color = d;
@@ -88,7 +88,7 @@
             }
         });
 
-    swatchEnter.each(function(d) {
+    swatchEnter.each(function (d) {
         if (d === active_local_color) {
             return d3.select(this).classed("active", true);
         }
@@ -97,7 +97,7 @@
     drag = vc.drag(); // = d3.drag();
     var rafRequest = 0;
 
-    drag.on("start", function() {
+    drag.on("start", function () {
         active_line[d3.event.sourceEvent.collaboratorId] = {
             points: [],
             color: active_color[d3.event.sourceEvent.collaboratorId] || default_color
@@ -106,16 +106,17 @@
         redraw();
     });
 
-    drag.on("drag", function() {
+    drag.on("drag", function () {
         if (active_line[d3.event.sourceEvent.collaboratorId]) {
             active_line[d3.event.sourceEvent.collaboratorId].points.push(vc.mouse(this));
             if (!rafRequest) {
                 rafRequest = requestAnimationFrame(redraw.bind(this));
             }
         }
+        console.log(document.querySelectorAll(":hover"));
     });
 
-    drag.on("end", function() {
+    drag.on("end", function () {
         if (
             active_line[d3.event.sourceEvent.collaboratorId] &&
             active_line[d3.event.sourceEvent.collaboratorId].points.length === 0
@@ -127,7 +128,7 @@
 
     canvas.call(drag);
 
-    redraw = function() {
+    redraw = function () {
         rafRequest = 0;
         const lines = lines_layer.selectAll(".line").data(drawing_data.lines);
         const enter = lines.enter();
@@ -135,14 +136,14 @@
         enter
             .append("path")
             .attr("class", "line")
-            .attr("stroke", function(d) {
+            .attr("stroke", function (d) {
                 return d.color;
             })
-            .each(function(d) {
+            .each(function (d) {
                 return (d.elem = d3.select(this));
             });
 
-        lines.attr("d", function(d) {
+        lines.attr("d", function (d) {
             return render_line(d.points);
         });
         lines.exit().remove();
@@ -150,7 +151,12 @@
 
     redraw();
 
-    setTimeout(function myFunction() {
+    const isLeader = () => {
+        let url = window.location.href;
+        return !url.includes("?visconnectid=");
+    }
+
+    setTimeout(() => {
         b = document.body;
 
         b.insertAdjacentHTML(
@@ -166,7 +172,7 @@
             </div>`
         );
         let pointerEventsImg = document.getElementById("pointer-events-btn-img");
-        pointerEventsImg.addEventListener("mouseover", function() {
+        pointerEventsImg.addEventListener("mouseover", function () {
             if (!enabled) {
                 pointerEventsImg.src = `${chrome.runtime.getURL("icons/pen-white.png")}`;
             } else {
@@ -174,7 +180,7 @@
             }
             pointerEventsImg.style.cursor = "pointer";
         });
-        pointerEventsImg.addEventListener("mouseout", function() {
+        pointerEventsImg.addEventListener("mouseout", function () {
             if (!enabled) {
                 pointerEventsImg.src = `${chrome.runtime.getURL("icons/pen.png")}`;
             } else {
@@ -205,11 +211,11 @@
             </div>`
         );
         let trashBtnImg = document.getElementById("trash-btn-img");
-        trashBtnImg.addEventListener("mouseover", function() {
+        trashBtnImg.addEventListener("mouseover", function () {
             trashBtnImg.src = `${chrome.runtime.getURL("icons/rubbish-white.png")}`;
             trashBtnImg.style.cursor = "pointer";
         });
-        trashBtnImg.addEventListener("mouseout", function() {
+        trashBtnImg.addEventListener("mouseout", function () {
             trashBtnImg.src = `${chrome.runtime.getURL("icons/rubbish.png")}`;
             trashBtnImg.style.cursor = "pointer";
         });
@@ -219,17 +225,25 @@
         });
 
         const updatePalette = () => {
+            let clientWidth = document.documentElement.clientWidth;
+            let clientHeight = document.documentElement.clientHeight;
+
             d3.select("#annotation-ui")
                 .selectAll("g")
                 .attr(
                     "transform",
                     "translate(" +
-                        (document.documentElement.clientWidth - 132 + SWATCH_D / 2) +
-                        "," +
-                        (document.documentElement.clientHeight - 630 + SWATCH_D / 2) +
-                        ")"
+                    (clientWidth - 132 + SWATCH_D / 2) +
+                    "," +
+                    (clientHeight - 630 + SWATCH_D / 2) +
+                    ")"
                 );
+            if (isLeader()) {
+                d3.select("#leader-window-size")
+                    .text(`${clientWidth}x${clientHeight}`);
+            }
         };
         window.onresize = updatePalette;
+        updatePalette();
     }, 100);
 }.call(this));
