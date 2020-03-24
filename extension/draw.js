@@ -41,7 +41,7 @@
         .attr(
             "transform",
             "translate(" +
-                (document.documentElement.clientWidth - 132 + SWATCH_D / 2) +
+                (document.documentElement.clientWidth - 136 + SWATCH_D / 2) +
                 "," +
                 (document.documentElement.clientHeight - 630 + SWATCH_D / 2) +
                 ")"
@@ -52,28 +52,32 @@
     swatches = palette
         .selectAll(".swatch")
         .data([
-            "#333333",
-            "#ffffff",
-            "#1b9e77",
-            "#d95f02",
-            "#7570b3",
-            "#e7298a",
-            "#66a61e",
-            "#e6ab02",
-            "#a6761d",
-            "#666666"
+            "#333333", // black
+            "#ffffff", // white
+            "#959697", // gray
+            "#FF1493", // pink
+            "#2772F7", // blue
+            "#8527AF", // purple
+            "#32cd32", // green
+            "#FFFF00", // yellow
+            "#FFA500", // orange
+            "#FF0000", // red
         ]);
 
     const swatchEnter = swatches.enter().append("circle");
 
     swatchEnter
         .attr("class", "swatch")
-        .attr("cy", function(d, i) {
-            return (i * (SWATCH_D + 4)) / 2;
+        .attr("cy", function (d, i) {
+            if (i % 2) {
+                return ((i - 1) * (SWATCH_D + 8)) / 2;
+            } else {
+                return (i * (SWATCH_D + 8)) / 2;
+            }
         })
         .attr("cx", function(d, i) {
             if (i % 2) {
-                return SWATCH_D;
+                return SWATCH_D + 8;
             } else {
                 return 0;
             }
@@ -233,7 +237,11 @@
                 .selectAll("g")
                 .attr(
                     "transform",
-                    "translate(" + (clientWidth - 132 + SWATCH_D / 2) + "," + (clientHeight - 630 + SWATCH_D / 2) + ")"
+                    "translate(" +
+                    (document.documentElement.clientWidth - 136 + SWATCH_D / 2) +
+                    "," +
+                    (document.documentElement.clientHeight - 630 + SWATCH_D / 2) +
+                    ")"
                 );
 
             d3.select(".color-palette").style("display", "block");

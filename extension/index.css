@@ -10,7 +10,7 @@ html {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
     right: 50px !important;
     bottom: 50px !important;
-    background: rgba(220, 220, 220, 0.8) !important;
+    background: rgba(220, 220, 220, 0.92) !important;
     color: black !important;
     line-height: 1.2em;
     text-align: center !important;
@@ -57,8 +57,8 @@ html {
 }
 
 .swatch.active {
-    stroke-width: 2px;
-    stroke: black;
+    stroke-width: 3px;
+    stroke: #4461BA;
 }
 
 .swatch {
@@ -81,7 +81,7 @@ html {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
     right: 50px !important;
     bottom: 175px !important;
-    background: rgba(220, 220, 220, 0.8) !important;
+    background: rgba(220, 220, 220, 0.92) !important;
     color: black !important;
     line-height: 1.2em;
     border: 1px solid #ccc;
@@ -108,7 +108,7 @@ html {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
     right: 50px !important;
     bottom: 300px !important;
-    background: rgba(220, 220, 220, 0.8) !important;
+    background: rgba(220, 220, 220, 0.92) !important;
     color: black !important;
     line-height: 1.2em;
     border: 1px solid #ccc;
@@ -134,7 +134,7 @@ html {
     z-index: 2147483645;
     right: 50px !important;
     bottom: 425px !important;
-    background: rgba(220, 220, 220, 0.8) !important;
+    background: rgba(220, 220, 220, 0.92) !important;
     line-height: 1.2em;
     border: 1px solid #ccc;
     border-radius: 10px;
