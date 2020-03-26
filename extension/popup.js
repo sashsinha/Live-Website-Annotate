@@ -1,5 +1,4 @@
 const getTabDetails = () => {
-    console.log("sdfsdfasdf");
     let q = { active: true, currentWindow: true };
     chrome.tabs.query(q, tabs => {
         window.currentTab = tabs[0];

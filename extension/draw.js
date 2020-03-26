@@ -63,6 +63,14 @@
             "#FFA500", // orange
             "#FF0000", // red
         ]);
+    
+    trash_btn = ui.append('text').html('')
+        .attr("class", 'btn')
+        .attr("id", "trash")
+        .on('click', function () {
+            drawing_data.lines = [];
+            return redraw();
+        });
 
     const swatchEnter = swatches.enter().append("circle");
 
@@ -225,8 +233,7 @@
             trashBtnImg.style.cursor = "pointer";
         });
         trashBtnImg.addEventListener("click", _e => {
-            drawing_data.lines = [];
-            return redraw();
+            d3.select('#trash').dispatch('click');
         });
 
         const updatePalette = () => {
