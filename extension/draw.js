@@ -43,7 +43,7 @@
             "translate(" +
                 (document.documentElement.clientWidth - 136 + SWATCH_D / 2) +
                 "," +
-                (document.documentElement.clientHeight - 630 + SWATCH_D / 2) +
+                (document.documentElement.clientHeight - 666 + SWATCH_D / 2) +
                 ")"
         )
         .style("display", "none")
@@ -56,9 +56,11 @@
             "#ffffff", // white
             "#959697", // gray
             "#FF1493", // pink
-            "#2772F7", // blue
             "#8527AF", // purple
+            "#1f4dad", // dark-blue
+            "#2772F7", // blue
             "#32cd32", // green
+            "#00ff00", // lime-green
             "#FFFF00", // yellow
             "#FFA500", // orange
             "#FF0000", // red
@@ -126,7 +128,7 @@
                 rafRequest = requestAnimationFrame(redraw.bind(this));
             }
         }
-        console.log(document.querySelectorAll(":hover"));
+        // console.log(document.querySelectorAll(":hover"));
     });
 
     drag.on("end", function() {
@@ -247,7 +249,7 @@
                     "translate(" +
                     (document.documentElement.clientWidth - 136 + SWATCH_D / 2) +
                     "," +
-                    (document.documentElement.clientHeight - 630 + SWATCH_D / 2) +
+                    (document.documentElement.clientHeight - 666 + SWATCH_D / 2) +
                     ")"
                 );
 

@@ -31,16 +31,17 @@ console.log(scrollHeight);
 
 const createCanvas = () => {
     if (!ranOnce) {
-        var canvas = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        canvas.setAttribute("id", "annotation-canvas");
-        canvas.setAttribute("width", `${scrollWidth}px`);
-        canvas.setAttribute("height", `${scrollHeight}px`);
-        document.body.appendChild(canvas);
         var ui = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         ui.setAttribute("id", "annotation-ui");
         ui.setAttribute("width", `${scrollWidth}px`);
         ui.setAttribute("height", `${scrollHeight}px`);
         document.body.appendChild(ui);
+        var canvas = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        canvas.setAttribute("id", "annotation-canvas");
+        canvas.setAttribute("width", `${scrollWidth}px`);
+        canvas.setAttribute("height", `${scrollHeight}px`);
+        canvas.setAttribute("collaboration", "live");
+        document.body.appendChild(canvas);
         ranOnce = true;
     }
 };
