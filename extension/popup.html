@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <title>Test</title>
     <link rel="stylesheet" href="materialize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -31,7 +32,7 @@
         <div id=valid-menu>
             <div class="input-field col s12">
                 <input disabled id="textarea1" class="materialize-textarea"></input>
-                <label id="textarea1label" for="textarea1">🔗Enter a VisLink</label>
+                <label id="textarea1label" for="textarea1"><i class="fa fa-link"></i>Enter a VisLink</label>
             </div>
             <a href="#" id="connect-to-vislink"
                 class="disabled btn-large waves-effect waves-teal-lighten-5 waves-ripple"
@@ -53,7 +54,7 @@
                 <circle class="crossmark__circle" cx="26" cy="26" r="25" fill="none" />
                 <path class="crossmark__check" fill="none" d="M16 16 36 36 M36 16 16 36" />
             </svg>
-            Navigate to a publicly hosted domain 
+            Navigate to a publicly hosted domain
         </div>
     </div>
     <script src="popup.js"></script>
@@ -84,8 +85,12 @@
         font-size: medium;
     }
 
-    .icon {
+    .fa {
         padding: 5px;
+    }
+
+    .icon {
+        padding-right: 5px;
     }
 
     .icon svg {
@@ -255,7 +260,8 @@
     }
 
     /* Snackbar */
-    #snackbar, #snackbar2 {
+    #snackbar,
+    #snackbar2 {
         visibility: hidden;
         background-color: #333;
         color: #fff;
@@ -271,7 +277,8 @@
         width: 90%;
     }
 
-    #snackbar.show, #snackbar2.show {
+    #snackbar.show,
+    #snackbar2.show {
         visibility: visible;
         -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
         animation: fadein 0.5s, fadeout 0.5s 2.5s;
