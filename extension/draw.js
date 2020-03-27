@@ -414,7 +414,7 @@
 
             d3.select(".color-palette").style("display", "block");
             d3.select(".controls-palette").style("display", "block");
-            d3.select("#desc-container").style("display", "flex");
+            d3.select("#visconnect-container").style("display", "flex");
             d3.select("html").style("cursor", "unset");
         };
         window.onresize = updatePalette;

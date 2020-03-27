@@ -2,7 +2,7 @@ html {
     cursor: wait;
 }
 
-#desc-container {
+#visconnect-container {
     padding: 0px !important;
     height: 100px !important;
     width: 100px !important;
@@ -20,18 +20,18 @@ html {
     align-items: center;
 }
 
-#desc-invite {
+#visconnect-invite {
     display: flex;
     text-align: center !important;
     justify-content: center;
     align-items: center;
 }
 
-#desc-logo {
+#visconnect-logo {
     padding-left: 0px !important;
 }
 
-#desc-invite:hover #desc-logo path {
+#visconnect-invite:hover #visconnect-logo path {
     stroke: white !important;
 }
 
