@@ -1,11 +1,11 @@
-let body = document.body;
-let bodyAttributes = [...body.attributes];
-let find = bodyAttributes.find(a => a.name === "collaboration");
-if (find !== undefined) {
-    console.log(find);
-} else {
-    body.setAttribute("collaboration", "live");
-}
+// let body = document.body;
+// let bodyAttributes = [...body.attributes];
+// let find = bodyAttributes.find(a => a.name === "collaboration");
+// if (find !== undefined) {
+//     console.log(find);
+// } else {
+//     body.setAttribute("collaboration", "live");
+// }
 
 let ranOnce = false;
 
@@ -31,17 +31,20 @@ console.log(scrollHeight);
 
 const createCanvas = () => {
     if (!ranOnce) {
+        var liveWebsiteAnnotateDiv = document.createElement('div');
+        liveWebsiteAnnotateDiv.setAttribute("id", "live-website-annotate-div");
+        liveWebsiteAnnotateDiv.setAttribute("collaboration", "live");
+        document.body.appendChild(liveWebsiteAnnotateDiv);
         var ui = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         ui.setAttribute("id", "annotation-ui");
         ui.setAttribute("width", `${scrollWidth}px`);
         ui.setAttribute("height", `${scrollHeight}px`);
-        document.body.appendChild(ui);
+        liveWebsiteAnnotateDiv.appendChild(ui);
         var canvas = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         canvas.setAttribute("id", "annotation-canvas");
         canvas.setAttribute("width", `${scrollWidth}px`);
         canvas.setAttribute("height", `${scrollHeight}px`);
-        canvas.setAttribute("collaboration", "live");
-        document.body.appendChild(canvas);
+        liveWebsiteAnnotateDiv.appendChild(canvas);
         ranOnce = true;
     }
 };
