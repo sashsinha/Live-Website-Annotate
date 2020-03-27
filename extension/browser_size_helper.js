@@ -86,9 +86,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         console.log(document.getElementById("resizeBoxHelper"));
         console.log(document.getElementById("resizeBoxHelper") == null);
         if (document.getElementById("resizeBoxHelper") != null) {
-            console.log("ZXCVB");
             fadeOut(document.getElementById("resizeBoxHelper"));
         }
-        console.log("dfsdfsdfsdfs");
     }
 });

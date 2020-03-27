@@ -127,6 +127,8 @@ const checkBrowserWindowSize = () => {
                     chrome.tabs.sendMessage(window.currentTab.id, { action: "fadeHelper" }, response => {
                         // console.log(`Helper fading!: ${response.success}`);
                     });
+
+                    clearInterval(recheckIntervalId);
                 } else {
                     document.getElementById("resize-menu").style.display = "block";
                     document.getElementById("valid-menu").style.display = "none";
@@ -150,3 +152,4 @@ const checkBrowserWindowSize = () => {
 };
 
 setTimeout(checkBrowserWindowSize, 100);
+var recheckIntervalId = setInterval(checkBrowserWindowSize, 4000);
