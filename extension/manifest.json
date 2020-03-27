@@ -55,7 +55,7 @@
                 "d3.v5.min.js",
                 "d3-selection-multi.v1.min.js",
                 "content.js",
-                "descvis-bundle.js",
+                "visconnect-bundle.js",
                 "draw.js"
             ]
         }
