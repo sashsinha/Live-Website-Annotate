@@ -219,7 +219,6 @@
                     highlighterTransition.style("height", "20").duration(500);
 
                     document.getElementById("annotation-canvas").style["pointer-events"] = "stroke";
-                    document.getElementById("annotation-canvas").style["background"] = "rgb(255, 0, 0, 0.1)";
                     document.body.style["userSelect"] = "none";
                 } else if (active_local_control == "icons/highlighter-solid") {
 
@@ -239,7 +238,6 @@
                     highlighterTransition.style("height", "50").duration(500);
 
                     document.getElementById("annotation-canvas").style["pointer-events"] = "stroke";
-                    document.getElementById("annotation-canvas").style["background"] = "rgb(255, 0, 0, 0.1)";
                     document.body.style["userSelect"] = "none";
                 } else if (active_local_control == "icons/mouse-pointer-solid") {
 

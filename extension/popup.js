@@ -27,7 +27,7 @@ connectToVislinkButton.addEventListener("click", () => {
 });
 
 const connectToVislinkButtonPress = () => {
-    const visLinkURL = inputElement.value;
+    const visLinkURL = inputElement.value + "?lwa";
     getTabDetails();
     setTimeout(() => {
         chrome.tabs.update(window.currentTab.id, { url: visLinkURL, active: true });
@@ -98,7 +98,11 @@ const myFunction2 = () => {
 };
 
 const checkBrowserWindowSize = () => {
-    if (!window.tabBaseURL.includes("chrome")) {
+    if (!window.tabBaseURL.startsWith("chrome") || window.tabBaseURL.startsWith("chrome-extension")) {
+        if (window.tabBaseURL.startsWith("chrome-extension")) {
+            
+        }
+
         chrome.tabs.sendMessage(window.currentTab.id, { action: "getWindowSize" }, response => {
             // console.log(response.width);
             // console.log(response.height);
@@ -121,7 +125,7 @@ const checkBrowserWindowSize = () => {
                     myFunction();
 
                     chrome.tabs.sendMessage(window.currentTab.id, { action: "fadeHelper" }, response => {
-                        console.log(`Helper fading!: ${response.success}`);
+                        // console.log(`Helper fading!: ${response.success}`);
                     });
                 } else {
                     document.getElementById("resize-menu").style.display = "block";

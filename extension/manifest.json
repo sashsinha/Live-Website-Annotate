@@ -29,6 +29,14 @@
         },
         {
             "matches": [
+                "*://*/*?visconnectid=*"
+            ],
+            "js": [
+                "using-extension-checker.js"
+            ]
+        },
+        {
+            "matches": [
                 "*://*/*visconnect*"
             ],
             "run_at": "document_start",
