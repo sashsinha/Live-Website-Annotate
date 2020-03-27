@@ -1,7 +1,7 @@
 // Based on the following bl.ock: http://bl.ocks.org/nitaku/d79632a53187f8e92b15
 
-(function() {
-    let enabled = false; // drawing disabled
+(function () {
+    let enabled = 0; // drawing disabled
 
     var SWATCH_D,
         active_color,
@@ -15,7 +15,8 @@
         render_line,
         swatches,
         trash_btn,
-        ui;
+        ui,
+        controlsPalette;
 
     SWATCH_D = 32;
     render_line = d3
@@ -33,6 +34,10 @@
     const default_color = "#333333";
     let active_local_color = default_color;
 
+    active_control = {};
+    const default_control = "icons/mouse-pointer-solid";
+    let active_local_control = default_control;
+
     canvas = d3.select("#annotation-canvas");
     lines_layer = canvas.append("g");
     ui = d3.select("#annotation-ui");
@@ -41,13 +46,26 @@
         .attr(
             "transform",
             "translate(" +
-                (document.documentElement.clientWidth - 136 + SWATCH_D / 2) +
-                "," +
-                (document.documentElement.clientHeight - 666 + SWATCH_D / 2) +
-                ")"
+            (document.documentElement.clientWidth - 136 + SWATCH_D / 2) +
+            "," +
+            (document.documentElement.clientHeight - 666 + SWATCH_D / 2) +
+            ")"
         )
         .style("display", "none")
         .classed("color-palette", true);
+
+    controlsPalette = ui
+        .append("g")
+        .attr(
+            "transform",
+            "translate(" +
+            (document.documentElement.clientWidth - 165 + SWATCH_D / 2) +
+            "," +
+            (document.documentElement.clientHeight - 832 + SWATCH_D / 2) +
+            ")"
+        )
+        .style("display", "none")
+        .classed("controls-palette", true);
 
     swatches = palette
         .selectAll(".swatch")
@@ -65,7 +83,15 @@
             "#FFA500", // orange
             "#FF0000", // red
         ]);
-    
+
+    controls = controlsPalette
+        .selectAll(".swatch")
+        .data([
+            "icons/mouse-pointer-solid",
+            "icons/highlighter-solid",
+            "icons/pencil-alt-solid"
+        ]);
+
     trash_btn = ui.append('text').html('')
         .attr("class", 'btn')
         .attr("id", "trash")
@@ -85,7 +111,7 @@
                 return (i * (SWATCH_D + 8)) / 2;
             }
         })
-        .attr("cx", function(d, i) {
+        .attr("cx", function (d, i) {
             if (i % 2) {
                 return SWATCH_D + 8;
             } else {
@@ -94,7 +120,7 @@
         })
         .attr("r", SWATCH_D / 2)
         .attr("fill", d => d)
-        .on("click", function(d) {
+        .on("click", function (d) {
             active_color[d3.event.collaboratorId] = d;
             if (d3.event.isLocalEvent) {
                 active_local_color = d;
@@ -103,25 +129,170 @@
             }
         });
 
-    swatchEnter.each(function(d) {
+    swatchEnter.each(function (d) {
         if (d === active_local_color) {
             return d3.select(this).classed("active", true);
         }
     });
 
+    const controlsEnter = controls.enter().append("svg:image");
+
+    controlsEnter
+        .attr("class", "control")
+        .attr("id", function (d) {
+            if (d == "icons/mouse-pointer-solid") {
+                return "pointer-action";
+            } else if (d == "icons/pencil-alt-solid") {
+                return "pencil-action";
+            } else if (d == "icons/highlighter-solid") {
+                return "highlighter-action";
+            }
+        })
+        .attr("width", function (d) {
+            if (d == "icons/mouse-pointer-solid") {
+                return "50";
+            } else if (d == "icons/pencil-alt-solid") {
+                return "20";
+            } else if (d == "icons/highlighter-solid") {
+                return "20";
+            }
+        })
+        .attr("height", function (d) {
+            if (d == "icons/mouse-pointer-solid") {
+                return "50";
+            } else if (d == "icons/pencil-alt-solid") {
+                return "20";
+            } else if (d == "icons/highlighter-solid") {
+                return "20";
+            }
+        })
+        .attr("href", d => {
+            if (d == active_local_control) {
+                return `${chrome.runtime.getURL(d + ".svg")}`
+            } else {
+                return `${chrome.runtime.getURL(d + "-gray.svg")}`
+            }
+        })
+        .attr("y", function (d, i) {
+            if (d == "icons/mouse-pointer-solid") {
+                return "10";
+            } else if (d == "icons/pencil-alt-solid") {
+                return "70";
+            } else if (d == "icons/highlighter-solid") {
+                return "70";
+            }
+        })
+        .attr("x", function (d, i) {
+            if (d == "icons/mouse-pointer-solid") {
+                return "25";
+            } else if (d == "icons/pencil-alt-solid") {
+                return "10";
+            } else if (d == "icons/highlighter-solid") {
+                return "70";
+            }
+        })
+        .on("click", function (d) {
+            active_control[d3.event.collaboratorId] = d;
+
+            if (d3.event.isLocalEvent) {
+                active_local_control = d;
+
+                var cursorTransition = d3.select("#pointer-action").transition();
+                var penTransition = d3.select("#pencil-action").transition();
+                var highlighterTransition = d3.select("#highlighter-action").transition();
+
+                if (active_local_control == "icons/pencil-alt-solid") {
+
+                    cursorTransition.attr("transform", "translate(45,60)").duration(500);
+                    cursorTransition.attr("href", `${chrome.runtime.getURL("icons/mouse-pointer-solid-gray.svg")}`).duration(500);
+                    cursorTransition.style("width", "20").duration(500);
+                    cursorTransition.style("height", "20").duration(500);
+
+                    penTransition.attr("transform", "translate(15,-60)").duration(500);
+                    penTransition.attr("href", `${chrome.runtime.getURL("icons/pencil-alt-solid.svg")}`).duration(500);
+                    penTransition.style("width", "50").duration(500);
+                    penTransition.style("height", "50").duration(500);
+
+                    highlighterTransition.attr("transform", "translate(-60,0)").duration(500);
+                    highlighterTransition.attr("href", `${chrome.runtime.getURL("icons/highlighter-solid-gray.svg")}`).duration(500);
+                    highlighterTransition.style("width", "20").duration(500);
+                    highlighterTransition.style("height", "20").duration(500);
+
+                    document.getElementById("annotation-canvas").style["pointer-events"] = "stroke";
+                    document.getElementById("annotation-canvas").style["background"] = "rgb(255, 0, 0, 0.1)";
+                    document.body.style["userSelect"] = "none";
+                } else if (active_local_control == "icons/highlighter-solid") {
+
+                    cursorTransition.attr("transform", "translate(-15,60)").duration(500);
+                    cursorTransition.attr("href", `${chrome.runtime.getURL("icons/mouse-pointer-solid-gray.svg")}`).duration(500);
+                    cursorTransition.style("width", "20").duration(500);
+                    cursorTransition.style("height", "20").duration(500);
+
+                    penTransition.attr("transform", "translate(60,0)").duration(500);
+                    penTransition.attr("href", `${chrome.runtime.getURL("icons/pencil-alt-solid-gray.svg")}`).duration(500);
+                    penTransition.style("width", "20").duration(500);
+                    penTransition.style("height", "20").duration(500);
+
+                    highlighterTransition.attr("transform", "translate(-45,-60)").duration(500);
+                    highlighterTransition.attr("href", `${chrome.runtime.getURL("icons/highlighter-solid.svg")}`).duration(500);
+                    highlighterTransition.style("width", "50").duration(500);
+                    highlighterTransition.style("height", "50").duration(500);
+
+                    document.getElementById("annotation-canvas").style["pointer-events"] = "stroke";
+                    document.getElementById("annotation-canvas").style["background"] = "rgb(255, 0, 0, 0.1)";
+                    document.body.style["userSelect"] = "none";
+                } else if (active_local_control == "icons/mouse-pointer-solid") {
+
+                    cursorTransition.attr("transform", "translate(0,0)").duration(500);
+                    cursorTransition.attr("href", `${chrome.runtime.getURL("icons/mouse-pointer-solid.svg")}`).duration(500);
+                    cursorTransition.style("width", "50").duration(500);
+                    cursorTransition.style("height", "50").duration(500);
+
+                    penTransition.attr("transform", "translate(0,0)").duration(500);
+                    penTransition.attr("href", `${chrome.runtime.getURL("icons/pencil-alt-solid-gray.svg")}`).duration(500);
+                    penTransition.style("width", "20").duration(500);
+                    penTransition.style("height", "20").duration(500);
+
+                    highlighterTransition.attr("transform", "translate(0,0)").duration(500);
+                    highlighterTransition.attr("href", `${chrome.runtime.getURL("icons/highlighter-solid-gray.svg")}`).duration(500);
+                    highlighterTransition.style("width", "20").duration(500);
+                    highlighterTransition.style("height", "20").duration(500);
+
+                    document.getElementById("annotation-canvas").style["pointer-events"] = "none";
+                    document.getElementById("annotation-canvas").style["background"] = "transparent";
+                    document.body.style["userSelect"] = "auto";
+                }
+            }
+        })
+        .on("mouseover", function (d) {
+            d3.select(this).attr("href", d =>
+                `${chrome.runtime.getURL(d + "-white.svg")}`
+            );
+        })
+        .on("mouseout", function (d) {
+            d3.select(this).attr("href", d => {
+                if (d === active_local_control) {
+                    return `${chrome.runtime.getURL(d + ".svg")}`
+                } else {
+                    return `${chrome.runtime.getURL(d + "-gray.svg")}`
+                }
+            });
+        });
+
     drag = vc.drag(); // = d3.drag();
     var rafRequest = 0;
 
-    drag.on("start", function() {
+    drag.on("start", function () {
         active_line[d3.event.sourceEvent.collaboratorId] = {
             points: [],
-            color: active_color[d3.event.sourceEvent.collaboratorId] || default_color
+            color: active_color[d3.event.sourceEvent.collaboratorId] || default_color,
+            control: active_control[d3.event.sourceEvent.collaboratorId] || default_control
         };
         drawing_data.lines.push(active_line[d3.event.sourceEvent.collaboratorId]);
         redraw();
     });
 
-    drag.on("drag", function() {
+    drag.on("drag", function () {
         if (active_line[d3.event.sourceEvent.collaboratorId]) {
             active_line[d3.event.sourceEvent.collaboratorId].points.push(vc.mouse(this));
             if (!rafRequest) {
@@ -131,7 +302,7 @@
         // console.log(document.querySelectorAll(":hover"));
     });
 
-    drag.on("end", function() {
+    drag.on("end", function () {
         if (
             active_line[d3.event.sourceEvent.collaboratorId] &&
             active_line[d3.event.sourceEvent.collaboratorId].points.length === 0
@@ -143,7 +314,7 @@
 
     canvas.call(drag);
 
-    redraw = function() {
+    redraw = function () {
         rafRequest = 0;
         const lines = lines_layer.selectAll(".line").data(drawing_data.lines);
         const enter = lines.enter();
@@ -151,14 +322,28 @@
         enter
             .append("path")
             .attr("class", "line")
-            .attr("stroke", function(d) {
+            .attr("stroke", function (d) {
                 return d.color;
             })
-            .each(function(d) {
+            .attr("stroke-width", function (d) {
+                if (d.control == "icons/highlighter-solid") {
+                    return "15px";
+                } else {
+                    return "2px";
+                }
+            })
+            .attr("stroke-opacity", function (d) {
+                if (d.control == "icons/highlighter-solid") {
+                    return ".4";
+                } else {
+                    return "1";
+                }
+            })
+            .each(function (d) {
                 return (d.elem = d3.select(this));
             });
 
-        lines.attr("d", function(d) {
+        lines.attr("d", function (d) {
             return render_line(d.points);
         });
         lines.exit().remove();
@@ -176,48 +361,15 @@
 
         b.insertAdjacentHTML(
             "beforeend",
-            `<div id="palette-background">
+            `<div id="controls-background">
             </div>`
         );
 
         b.insertAdjacentHTML(
             "beforeend",
-            `<div id="pointer-events-btn">
-                <img id="pointer-events-btn-img" src=${chrome.runtime.getURL("icons/pen.png")} alt="delete"/>
+            `<div id="palette-background">
             </div>`
         );
-        let pointerEventsImg = document.getElementById("pointer-events-btn-img");
-        pointerEventsImg.addEventListener("mouseover", function() {
-            if (!enabled) {
-                pointerEventsImg.src = `${chrome.runtime.getURL("icons/pen-white.png")}`;
-            } else {
-                pointerEventsImg.src = `${chrome.runtime.getURL("icons/cursor-white.png")}`;
-            }
-            pointerEventsImg.style.cursor = "pointer";
-        });
-        pointerEventsImg.addEventListener("mouseout", function() {
-            if (!enabled) {
-                pointerEventsImg.src = `${chrome.runtime.getURL("icons/pen.png")}`;
-            } else {
-                pointerEventsImg.src = `${chrome.runtime.getURL("icons/cursor.png")}`;
-            }
-            pointerEventsImg.style.cursor = "pointer";
-        });
-        pointerEventsImg.addEventListener("click", _e => {
-            let c = document.getElementById("annotation-canvas");
-            if (!enabled) {
-                c.style["pointer-events"] = "stroke";
-                c.style["background"] = "rgb(255, 0, 0, 0.1)";
-                document.body.style["userSelect"] = "none";
-                pointerEventsImg.src = `${chrome.runtime.getURL("icons/cursor.png")}`;
-            } else {
-                c.style["pointer-events"] = "none";
-                c.style["background"] = "transparent";
-                document.body.style["userSelect"] = "auto";
-                pointerEventsImg.src = `${chrome.runtime.getURL("icons/pen.png")}`;
-            }
-            enabled = !enabled;
-        });
 
         b.insertAdjacentHTML(
             "beforeend",
@@ -226,11 +378,11 @@
             </div>`
         );
         let trashBtnImg = document.getElementById("trash-btn-img");
-        trashBtnImg.addEventListener("mouseover", function() {
+        trashBtnImg.addEventListener("mouseover", function () {
             trashBtnImg.src = `${chrome.runtime.getURL("icons/rubbish-white.png")}`;
             trashBtnImg.style.cursor = "pointer";
         });
-        trashBtnImg.addEventListener("mouseout", function() {
+        trashBtnImg.addEventListener("mouseout", function () {
             trashBtnImg.src = `${chrome.runtime.getURL("icons/rubbish.png")}`;
             trashBtnImg.style.cursor = "pointer";
         });
@@ -242,18 +394,28 @@
             let clientWidth = document.documentElement.clientWidth;
             let clientHeight = document.documentElement.clientHeight;
 
-            d3.select("#annotation-ui")
-                .selectAll("g")
+            d3.select(".color-palette")
                 .attr(
                     "transform",
                     "translate(" +
                     (document.documentElement.clientWidth - 136 + SWATCH_D / 2) +
                     "," +
-                    (document.documentElement.clientHeight - 666 + SWATCH_D / 2) +
+                    (document.documentElement.clientHeight - 540 + SWATCH_D / 2) +
                     ")"
                 );
 
+            d3.select(".controls-palette")
+                .attr(
+                    "transform",
+                    "translate(" +
+                    (document.documentElement.clientWidth - 165 + SWATCH_D / 2) +
+                    "," +
+                    (document.documentElement.clientHeight - 690 + SWATCH_D / 2) +
+                    ")"
+                )
+
             d3.select(".color-palette").style("display", "block");
+            d3.select(".controls-palette").style("display", "block");
             d3.select("#desc-container").style("display", "flex");
             d3.select("html").style("cursor", "unset");
         };

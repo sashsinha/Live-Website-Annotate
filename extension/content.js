@@ -1,12 +1,3 @@
-// let body = document.body;
-// let bodyAttributes = [...body.attributes];
-// let find = bodyAttributes.find(a => a.name === "collaboration");
-// if (find !== undefined) {
-//     console.log(find);
-// } else {
-//     body.setAttribute("collaboration", "live");
-// }
-
 let ranOnce = false;
 
 let scrollWidth = Math.max(

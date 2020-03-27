@@ -54,20 +54,27 @@ html {
 
 .swatch {
     pointer-events: all;
+    cursor: pointer;
 }
 
 .swatch.active {
     stroke-width: 3px;
-    stroke: #3E68B5;
+    stroke: #3e68b5;
 }
 
-.swatch {
+.control {
+    pointer-events: all;
     cursor: pointer;
+    padding: 4px;
+}
+
+.control.active {
+    outline: 2px solid #3e68b5;
 }
 
 .line {
     fill: none;
-    stroke-width: 2px;
+    /* stroke-width: 2px; */
     stroke-linejoin: round;
     stroke-linecap: round;
 }
@@ -99,33 +106,6 @@ html {
     width: 50px;
 }
 
-#pointer-events-btn {
-    padding: 0px !important;
-    position: fixed;
-    height: 100px !important;
-    width: 100px !important;
-    z-index: 2147483647;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-    right: 50px !important;
-    bottom: 300px !important;
-    background: rgba(220, 220, 220, 0.92) !important;
-    color: black !important;
-    line-height: 1.2em;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    transition: height 500ms;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-#pointer-events-btn-img {
-    height: 50px;
-    width: 50px;
-}
-
 #palette-background {
     padding: 0px !important;
     position: fixed;
@@ -133,15 +113,27 @@ html {
     width: 100px !important;
     z-index: 2147483645;
     right: 50px !important;
-    bottom: 425px !important;
+    bottom: 300px !important;
     background: rgba(220, 220, 220, 0.92) !important;
     line-height: 1.2em;
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 10px;
     transition: height 500ms;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+}
+
+#controls-background {
+    padding: 0px !important;
+    position: fixed;
+    height: 100px !important;
+    width: 100px !important;
+    z-index: 2147483645;
+    right: 50px !important;
+    bottom: 576px !important;
+    background: rgba(220, 220, 220, 0.92) !important;
+    line-height: 1.2em;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    transition: height 500ms;
 }
