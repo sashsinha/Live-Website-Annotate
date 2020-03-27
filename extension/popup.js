@@ -8,7 +8,7 @@ const getTabDetails = () => {
         // console.log(window.currentTab);
         // console.log(window.tabBaseURL);
         if (!window.tabBaseURL.includes("chrome")) {
-            console.log(window.tabBaseURL.includes("?visconnect"));
+            //console.log(window.tabBaseURL.includes("?visconnect"));
             if (window.tabBaseURL.includes("?visconnect")) {
                 annotateAsLeaderButton.innerText = "Stop annotating";
             } else {
@@ -27,7 +27,10 @@ connectToVislinkButton.addEventListener("click", () => {
 });
 
 const connectToVislinkButtonPress = () => {
-    const visLinkURL = inputElement.value + "?lwa";
+    let visLinkURL = inputElement.value;
+    if (!visLinkURL.endsWith("?lwa")) {
+        visLinkURL = inputElement.value + "?lwa";
+    }
     getTabDetails();
     setTimeout(() => {
         chrome.tabs.update(window.currentTab.id, { url: visLinkURL, active: true });
