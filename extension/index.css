@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap');
+
 html {
     cursor: wait;
 }
@@ -79,7 +81,49 @@ html {
     stroke-linecap: round;
 }
 
-#trash-btn {
+#trash-btn-img {
+    height: 28px;
+    width: 28px;
+    margin: 12px !important;
+}
+
+#palette-background {
+    padding: 0px !important;
+    position: fixed;
+    height: 250px !important;
+    width: 100px !important;
+    z-index: 2147483645;
+    right: 50px !important;
+    bottom: 300px !important;
+    background: rgba(220, 220, 220, 0.92) !important;
+    line-height: 1.2em;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    transition: height 500ms;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#controls-background {
+    padding: 0px !important;
+    position: fixed;
+    height: 100px !important;
+    width: 100px !important;
+    z-index: 2147483645;
+    right: 50px !important;
+    bottom: 576px !important;
+    background: rgba(220, 220, 220, 0.92) !important;
+    line-height: 1.2em;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    transition: height 500ms;
+}
+
+#chat-btn-background {
     padding: 0px !important;
     position: fixed;
     height: 100px !important;
@@ -101,39 +145,107 @@ html {
     align-items: center;
 }
 
-#trash-btn-img {
+#chat-btn-img {
     height: 50px;
     width: 50px;
 }
 
-#palette-background {
-    padding: 0px !important;
-    position: fixed;
-    height: 250px !important;
-    width: 100px !important;
-    z-index: 2147483645;
-    right: 50px !important;
-    bottom: 300px !important;
-    background: rgba(220, 220, 220, 0.92) !important;
-    line-height: 1.2em;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+#chat-window {
+    width: 290px;
+    height: 188px;
     padding: 10px;
-    transition: height 500ms;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    box-sizing: border-box !important;
+    /* background: rgba(62, 104, 181, 0.1) !important; */
+    overflow-y:auto;
 }
 
-#controls-background {
+#chat-background {
     padding: 0px !important;
     position: fixed;
-    height: 100px !important;
-    width: 100px !important;
-    z-index: 2147483645;
-    right: 50px !important;
-    bottom: 576px !important;
+    height: 225px !important;
+    width: 300px !important;
+    z-index: 2147483647;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    right: 175px !important;
+    bottom: 50px !important;
     background: rgba(220, 220, 220, 0.92) !important;
+    color: black !important;
     line-height: 1.2em;
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 10px;
     transition: height 500ms;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box !important;
+}
+
+#sendMessageBox {
+    width: 235px !important;
+    margin: 0px;
+    border: 1px solid transparent;
+    padding: 0px !important;
+    padding-left: 5px !important;
+    border-radius: 5px;
+    font-size: 14px !important;
+    box-sizing: border-box !important;
+}
+
+#sendMessageBox:focus {
+    outline: none !important;
+    border: 1px solid #3e68b5;
+    box-shadow: 0 0 5px #3e68b5;
+}
+
+#sendButton {
+    border-radius: 5px;
+    border: 1px solid transparent;
+    background-color: #3e68b5;
+    color: #FFFFFF;
+    font-size: 14px !important;
+    box-sizing: border-box !important;
+    padding-bottom: 1px;
+    margin-left: 2px;
+}
+
+#sendButton:focus {
+    outline: none !important;
+}
+
+#sendButton:hover {
+    background-color: #FFFFFF;
+    color: #3e68b5;
+    cursor: pointer; 
+}
+
+#messages {
+    list-style-type: none;
+    padding: 0px;
+    font-size: 14px !important;
+    box-sizing: border-box !important;
+}
+
+#messages li:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+.chat-status {
+    color: black;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }

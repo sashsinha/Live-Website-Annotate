@@ -8,56 +8,27 @@
         "default_icon": "icons/icon_round.png",
         "default_popup": "popup.html"
     },
-    "permissions": [
-        "activeTab"
-    ],
+    "permissions": ["activeTab"],
     "content_scripts": [
         {
-            "matches": [
-                "<all_urls>"
-            ],
-            "excludes_matches": [
-                "chrome*"
-            ],
-            "css": [
-                "browser_size_helper.css"
-            ],
-            "js": [
-                "materialize.min.js",
-                "browser_size_helper.js"
-            ]
+            "matches": ["<all_urls>"],
+            "excludes_matches": ["chrome*"],
+            "css": ["browser_size_helper.css"],
+            "js": ["materialize.min.js", "browser_size_helper.js"]
         },
         {
-            "matches": [
-                "*://*/*?visconnectid=*"
-            ],
-            "js": [
-                "using-extension-checker.js"
-            ]
+            "matches": ["*://*/*?visconnectid=*"],
+            "js": ["using-extension-checker.js"]
         },
         {
-            "matches": [
-                "*://*/*visconnect*"
-            ],
+            "matches": ["*://*/*visconnect*"],
             "run_at": "document_start",
-            "js": [
-                "peerjs.1.0.4.min.js"
-            ]
+            "js": ["peerjs.1.0.4.min.js"]
         },
         {
-            "matches": [
-                "*://*/*visconnect*"
-            ],
-            "css": [
-                "index.css"
-            ],
-            "js": [
-                "d3.v5.min.js",
-                "d3-selection-multi.v1.min.js",
-                "content.js",
-                "visconnect-bundle.js",
-                "draw.js"
-            ]
+            "matches": ["*://*/*visconnect*"],
+            "css": ["index.css"],
+            "js": ["d3.v5.min.js", "d3-selection-multi.v1.min.js", "content.js", "visconnect-bundle.js", "draw.js"]
         }
     ],
     "icons": {
@@ -66,8 +37,6 @@
         "64": "icons/icon_64.png"
     },
     "web_accessible_resources": [
-        "icons/rubbish.png",
-        "icons/rubbish-white.png",
         "icons/pencil-alt-solid.svg",
         "icons/pencil-alt-solid-gray.svg",
         "icons/pencil-alt-solid-white.svg",
@@ -76,6 +45,12 @@
         "icons/mouse-pointer-solid-white.svg",
         "icons/highlighter-solid.svg",
         "icons/highlighter-solid-gray.svg",
-        "icons/highlighter-solid-white.svg"
+        "icons/highlighter-solid-white.svg",
+        "icons/trash-alt-solid.svg",
+        "icons/trash-alt-solid-white.svg",
+        "icons/comment-solid.svg",
+        "icons/comment-solid-white.svg",
+        "icons/comment-slash-solid.svg",
+        "icons/comment-slash-solid-white.svg"
     ]
 }

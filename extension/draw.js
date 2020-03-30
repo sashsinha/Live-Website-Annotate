@@ -1,7 +1,7 @@
 // Based on the following bl.ock: http://bl.ocks.org/nitaku/d79632a53187f8e92b15
 
 (function () {
-    let enabled = 0; // drawing disabled
+    let chat_enabled = false;
 
     var SWATCH_D,
         active_color,
@@ -75,10 +75,8 @@
             "#959697", // gray
             "#FF1493", // pink
             "#8527AF", // purple
-            "#1f4dad", // dark-blue
             "#2772F7", // blue
             "#32cd32", // green
-            "#00ff00", // lime-green
             "#FFFF00", // yellow
             "#FFA500", // orange
             "#FF0000", // red
@@ -275,6 +273,16 @@
                     return `${chrome.runtime.getURL(d + "-gray.svg")}`
                 }
             });
+        })
+        .append("svg:title")
+        .text(function (d, i) {
+            if (d == "icons/mouse-pointer-solid") {
+                return "Select Pointer";
+            } else if (d == "icons/pencil-alt-solid") {
+                return "Select Pencil";
+            } else if (d == "icons/highlighter-solid") {
+                return "Select Highlighter";
+            }
         });
 
     drag = vc.drag(); // = d3.drag();
@@ -366,26 +374,102 @@
         b.insertAdjacentHTML(
             "beforeend",
             `<div id="palette-background">
+                <img
+                    id="trash-btn-img"
+                    src=${chrome.runtime.getURL("icons/trash-alt-solid.svg")} 
+                    alt="delete"
+                    title="Delete Annotation"
+                />
+            </div>`
+        );
+
+        let trashBtnImg = document.getElementById("trash-btn-img");
+        trashBtnImg.addEventListener("mouseover", function () {
+            trashBtnImg.src = `${chrome.runtime.getURL("icons/trash-alt-solid-white.svg")}`;
+            trashBtnImg.style.cursor = "pointer";
+        });
+        trashBtnImg.addEventListener("mouseout", function () {
+            trashBtnImg.src = `${chrome.runtime.getURL("icons/trash-alt-solid.svg")}`;
+            trashBtnImg.style.cursor = "pointer";
+        });
+        trashBtnImg.addEventListener("click", _e => {
+            d3.select('#trash').dispatch('click');
+        });
+
+
+        b.insertAdjacentHTML(
+            "beforeend",
+            `<div id="chat-btn-background">
+                <img
+                    id="chat-btn-img"
+                    src=${chrome.runtime.getURL("icons/comment-solid.svg")} 
+                    alt="chat"
+                    title="Chat"
+                />
             </div>`
         );
 
         b.insertAdjacentHTML(
             "beforeend",
-            `<div id="trash-btn">
-                <img id="trash-btn-img" src=${chrome.runtime.getURL("icons/rubbish.png")} alt="delete"/>
+            `<div id="chat-background">
+                <div id="chat-window">
+                    <ul id="messages">
+                        <li class="chat-status"><i><b>Console</b>: You joined the chat.<i></li>
+                    </ul>
+                </div>
+                <div id="chat-bottom"> 
+                    <input type="text" id="sendMessageBox" placeholder="Enter a message..." autofocus="true" />
+                    <button type="button" id="sendButton">Send</button>
+                </div>
             </div>`
         );
-        let trashBtnImg = document.getElementById("trash-btn-img");
-        trashBtnImg.addEventListener("mouseover", function () {
-            trashBtnImg.src = `${chrome.runtime.getURL("icons/rubbish-white.png")}`;
-            trashBtnImg.style.cursor = "pointer";
+        
+        let messages = document.getElementById("messages");
+        let textbox = document.getElementById("sendMessageBox");
+        let sendButton = document.getElementById("sendButton");
+
+        sendButton.addEventListener("click", function () {
+            if (textbox.value) {
+                let newMessage = document.createElement("li");
+                newMessage.innerHTML = `<span class="you" style="color:${active_local_color}"><b>You</b>: </span>` + textbox.value;
+                messages.appendChild(newMessage);
+                textbox.value = "";
+            }
         });
-        trashBtnImg.addEventListener("mouseout", function () {
-            trashBtnImg.src = `${chrome.runtime.getURL("icons/rubbish.png")}`;
-            trashBtnImg.style.cursor = "pointer";
+        
+        let chatBackground = document.getElementById("chat-background");
+        let chatBtnImg = document.getElementById("chat-btn-img");
+        chatBtnImg.addEventListener("mouseover", function () {
+            if (chat_enabled) {
+                chatBtnImg.src = `${chrome.runtime.getURL("icons/comment-slash-solid-white.svg")}`;
+            } else {
+                chatBtnImg.src = `${chrome.runtime.getURL("icons/comment-solid-white.svg")}`;
+            }
+            chatBtnImg.style.cursor = "pointer";
         });
-        trashBtnImg.addEventListener("click", _e => {
-            d3.select('#trash').dispatch('click');
+        chatBtnImg.addEventListener("mouseout", function () {
+            if (chat_enabled) {
+                chatBtnImg.src = `${chrome.runtime.getURL("icons/comment-slash-solid.svg")}`;
+                chatBtnImg.style.width = `63px`;
+                chatBtnImg.style.height = `63px`;
+            } else {
+                chatBtnImg.src = `${chrome.runtime.getURL("icons/comment-solid.svg")}`;
+                chatBtnImg.style.width = `50px`;
+                chatBtnImg.style.height = `50px`;
+            }
+            chatBtnImg.style.cursor = "pointer";
+        });
+        chatBtnImg.addEventListener("click", _e => {
+            if (chat_enabled) {
+                chatBtnImg.src = `${chrome.runtime.getURL("icons/comment-slash-solid.svg")}`;
+                chatBackground.style.display = "none";
+            } else {
+                chatBtnImg.src = `${chrome.runtime.getURL("icons/comment-solid.svg")}`;
+                chatBackground.style.display = "flex";
+            }
+            chat_enabled = !chat_enabled;
+            d3.select("#chat-btn-img").dispatch("mouseout");
+            d3.select("#chat-btn-img").dispatch("mouseover");
         });
 
         const updatePalette = () => {
