@@ -135,9 +135,11 @@ var stringToHex = function (string) {
 };
 
 var VcListener = /** @class */ (function () {
-    function VcListener(svg, hearEvent) {
+    function VcListener(svg, hearEvent, customEvents, ignoreEvents) {
         this.svg = svg;
         this.hearEvent = hearEvent;
+        this.customEvents = customEvents;
+        this.ignoreEvents = ignoreEvents;
         this.addListenersToElementAndChildren(this.svg);
     }
     VcListener.prototype.addListenersToElementAndChildren = function (element) {
@@ -148,21 +150,16 @@ var VcListener = /** @class */ (function () {
         }
     };
     VcListener.prototype.addListenersToElement = function (element) {
+        var _this = this;
         var boundCapture = this.captureEvent(element).bind(this);
-        element.addEventListener('mousemove', boundCapture);
-        element.addEventListener('mouseup', boundCapture);
-        element.addEventListener('mousedown', boundCapture);
-        element.addEventListener('touchmove', boundCapture);
-        element.addEventListener('mouseenter', boundCapture);
-        element.addEventListener('mouseout', boundCapture);
-        element.addEventListener('mouseover', boundCapture);
-        element.addEventListener('mouseleave', boundCapture);
-        element.addEventListener('click', boundCapture);
-        element.addEventListener('dblclick', boundCapture);
-        element.addEventListener('touchstart', boundCapture);
-        element.addEventListener('touchend', boundCapture);
-        element.addEventListener('selectstart', boundCapture);
-        element.addEventListener('dragstart', boundCapture);
+        var custom = this.customEvents ? this.customEvents : [];
+        var eventTypes = ['mousemove', 'mouseup', 'mousedown', 'touchmove', 'mouseenter', 'mouseout', 'mouseover',
+            'mouseleave', 'click', 'dblclick', 'touchstart', 'touchend', 'selectstart', 'dragstart'].concat(custom)
+            .filter(function (type) { return !_this.ignoreEvents || !_this.ignoreEvents.includes(type); });
+        for (var _i = 0, eventTypes_1 = eventTypes; _i < eventTypes_1.length; _i++) {
+            var type = eventTypes_1[_i];
+            element.addEventListener(type, boundCapture);
+        }
         // Add listeners to future child elements.
         var appendBackup = element.appendChild;
         var insertBeforeBackup = element.insertBefore;
@@ -217,6 +214,9 @@ var VcListener = /** @class */ (function () {
                 var touch = _a[_i];
                 obj.touches.push({ clientX: touch.clientX + window.scrollX, clientY: touch.clientY + window.scrollX });
             }
+        }
+        if (e.detail) {
+            obj.detail = e.detail;
         }
         var target = this.getElementSelector(e.target);
         if (target) {
@@ -314,6 +314,12 @@ function recreateEvent(eventObject, target) {
     }
     else {
         e = new Event(eventObject.type, eventObject);
+    }
+    if (eventObject.detail) {
+        Object.defineProperty(e, 'detail', {
+            writable: true,
+            value: eventObject.detail,
+        });
     }
     if (targetSelector) {
         var newTarget = document.querySelector(targetSelector);
@@ -1771,7 +1777,7 @@ var VcLeaderProtocol = /** @class */ (function (_super) {
 }(VcProtocol));
 
 var Visconnect = /** @class */ (function () {
-    function Visconnect(svg, safeMode) {
+    function Visconnect(svg, safeMode, customEvents, ignoreEvents) {
         if (safeMode === void 0) { safeMode = true; }
         this.svg = svg;
         this.safeMode = safeMode;
@@ -1782,7 +1788,7 @@ var Visconnect = /** @class */ (function () {
         var Protocol = isLeader ? VcLeaderProtocol : VcProtocol;
         var unsafeElements = safeMode ? ['body', 'svg', 'g'] : ['*'];
         this.protocol = new Protocol(leaderId, this.executeEvent.bind(this), this.cancelEvent.bind(this), unsafeElements);
-        this.listener = new VcListener(this.svg, this.localEvent.bind(this));
+        this.listener = new VcListener(this.svg, this.localEvent.bind(this), customEvents, ignoreEvents);
     }
     Visconnect.prototype.localEvent = function (stripped, event) {
         stopPropagation(event);
@@ -1800,6 +1806,9 @@ var Visconnect = /** @class */ (function () {
         event['isLocalEvent'] = stripped.collaboratorId === this.protocol.communication.getId();
         if (event.target) {
             event.target.dispatchEvent(event);
+            if (event.type === 'click') {
+                event.target.focus();
+            }
         }
     };
     return Visconnect;
@@ -1928,11 +1937,21 @@ delayAddEventListener().then(function () {
     var elsWithAttribute = document.querySelectorAll('[collaboration]');
     var svg = document.getElementsByTagName('svg')[0];
     var safeMode = true;
+    var customEvents = undefined;
+    var ignoreEvents = undefined;
     if (elsWithAttribute.length) {
         el = elsWithAttribute[0];
         var val = el.getAttribute('collaboration');
         if (val && val === 'live') {
             safeMode = false;
+        }
+        var customEventsVal = el.getAttribute('custom-events');
+        if (customEventsVal) {
+            customEvents = customEventsVal.replace(' ', '').split(',');
+        }
+        var ignoreEventsVal = el.getAttribute('ignore-events');
+        if (ignoreEventsVal) {
+            ignoreEvents = ignoreEventsVal.replace(' ', '').split(',');
         }
     }
     else if (svg) {
@@ -1942,7 +1961,7 @@ delayAddEventListener().then(function () {
         el = document.body;
     }
     console.log('start visconnect');
-    visconnect = new Visconnect(el, safeMode);
+    visconnect = new Visconnect(el, safeMode, customEvents, ignoreEvents);
     visconnectUi = new VisConnectUi(visconnect, el);
     visconnect.onEventCancelled = visconnectUi.eventCancelled.bind(visconnectUi);
 });
