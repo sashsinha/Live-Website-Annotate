@@ -281,6 +281,6 @@ html {
 
 #lds-ring-loading {
     position: fixed;
-    right: 40px !important;
-    bottom: 40px !important;
+    right: 50px !important;
+    bottom: 300px !important;
 }
