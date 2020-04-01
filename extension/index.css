@@ -259,6 +259,7 @@ html {
     border-radius: 50%;
     animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border-color: #3e68b5 transparent transparent transparent;
+    z-index: 2147483647 !important;
 }
 .lds-ring div:nth-child(1) {
     animation-delay: -0.45s;
@@ -280,6 +281,6 @@ html {
 
 #lds-ring-loading {
     position: fixed;
-    right: 50px !important;
-    bottom: 50px !important;
+    right: 40px !important;
+    bottom: 40px !important;
 }
