@@ -1,3 +1,13 @@
+let body = document.body;
+let bodyAttributes = [...body.attributes];
+let find = bodyAttributes.find(a => a.name === "collaboration");
+if (find !== undefined) {
+    console.log(find);
+} else {
+    body.setAttribute("collaboration", "live");
+    body.setAttribute("custom-events", "chat-message");
+}
+
 let ranOnce = false;
 
 let scrollWidth = Math.max(
@@ -22,20 +32,25 @@ console.log(scrollHeight);
 
 const createCanvas = () => {
     if (!ranOnce) {
-        var liveWebsiteAnnotateDiv = document.createElement('div');
-        liveWebsiteAnnotateDiv.setAttribute("id", "live-website-annotate-div");
-        liveWebsiteAnnotateDiv.setAttribute("collaboration", "live");
-        document.body.appendChild(liveWebsiteAnnotateDiv);
+        var b = document.body;
+        // var liveWebsiteAnnotateDiv = document.createElement('div');
+        // liveWebsiteAnnotateDiv.setAttribute("id", "live-website-annotate-div");
+        // liveWebsiteAnnotateDiv.setAttribute("collaboration", "live");
+        // liveWebsiteAnnotateDiv.setAttribute("custom-events", "chat-message");
+        // // document.body.appendChild(liveWebsiteAnnotateDiv);
+        // b.insertAdjacentElement("afterbegin",liveWebsiteAnnotateDiv);
         var ui = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         ui.setAttribute("id", "annotation-ui");
         ui.setAttribute("width", `${scrollWidth}px`);
         ui.setAttribute("height", `${scrollHeight}px`);
-        liveWebsiteAnnotateDiv.appendChild(ui);
+        b.insertAdjacentElement("afterbegin", ui);
+        // liveWebsiteAnnotateDiv.appendChild(ui);
         var canvas = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         canvas.setAttribute("id", "annotation-canvas");
         canvas.setAttribute("width", `${scrollWidth}px`);
         canvas.setAttribute("height", `${scrollHeight}px`);
-        liveWebsiteAnnotateDiv.appendChild(canvas);
+        b.insertAdjacentElement("afterbegin", canvas);
+        // liveWebsiteAnnotateDiv.appendChild(canvas);
         ranOnce = true;
     }
 };
