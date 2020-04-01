@@ -216,13 +216,17 @@ html {
     overflow: visible;
 }
 
-#chat-title {
+#chat-title-row {
     display: none;
     justify-content: center;
     align-items: center;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
     font-size: 12px !important;
     color: #3e68b5;
+}
+
+#chat-title {
+    font-size: 16px !important;
 }
 
 #local-chat-msg {

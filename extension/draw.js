@@ -425,7 +425,7 @@
             "beforeend",
             `<div id="chat-background">
                 <div id="lds-ring-chat" class="lds-ring"><div></div><div></div><div></div><div></div></div>
-                <div id="chat-title"><span><b>Current Chat Name:</b></span>
+                <div id="chat-title-row"><span id="chat-title"><b>Current Chat ID:</b></span>
                     <input class="live-web-annotate-input" id="live-web-annotate-chat-nick" size="60" value="Anon-${randomAlphaNumeric}" type="text" name="nick" autocomplete="off" maxlength="10" />
                 </div>
                 <div id="live-web-annotate-chat"></div>
@@ -436,7 +436,7 @@
         setTimeout(() => {
             document.getElementById("lds-ring-chat").style.display = "none";
             document.getElementById("live-web-annotate-chat").style.display = "block";
-            document.getElementById("chat-title").style.display = "flex";
+            document.getElementById("chat-title-row").style.display = "flex";
             document.getElementById("live-web-annotate-chat-input").style.display = "block";
         }, 3000);
 
@@ -472,6 +472,9 @@
                     return `<b>${d.sender}</b>: ${d.text}`;
                 }
             });
+            let chatWindow = document.getElementById('live-web-annotate-chat');
+            var xH = chatWindow.scrollHeight;
+            chatWindow.scrollTo(0, xH);
         }
         
         // let messages = document.getElementById("messages");
