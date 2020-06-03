@@ -3,12 +3,15 @@ const getTabDetails = () => {
     chrome.tabs.query(q, tabs => {
         window.currentTab = tabs[0];
         window.tabBaseURL = window.currentTab.url;
+        if (!window.tabBaseURL.includes("chrome") || window.tabBaseURL.includes("use-chrome-extension-interface")) {
+            chrome.runtime.sendMessage({
+                msg: "popupOpened",
+                tabId: window.currentTab.id
+            });
+        }
     });
     setTimeout(() => {
-        // console.log(window.currentTab);
-        // console.log(window.tabBaseURL);
         if (!window.tabBaseURL.includes("chrome")) {
-            //console.log(window.tabBaseURL.includes("?visconnect"));
             if (window.tabBaseURL.includes("?visconnect")) {
                 annotateAsLeaderButton.innerText = "Stop annotating";
             } else {
@@ -101,17 +104,8 @@ const myFunction2 = () => {
 };
 
 const checkBrowserWindowSize = () => {
-    if (!window.tabBaseURL.startsWith("chrome") || window.tabBaseURL.startsWith("chrome-extension")) {
-        if (window.tabBaseURL.startsWith("chrome-extension")) {
-            
-        }
-
+    if (!window.tabBaseURL.includes("chrome") || window.tabBaseURL.includes("use-chrome-extension-interface")) {
         chrome.tabs.sendMessage(window.currentTab.id, { action: "getWindowSize" }, response => {
-            // console.log(response.width);
-            // console.log(response.height);
-            // console.log(response.valid);
-            // console.log(response.tooSmall);
-
             let textarea1 = document.getElementById("textarea1");
             let container = document.getElementsByClassName("container")[0];
 
