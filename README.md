@@ -6,6 +6,6 @@ Annotate webpages in real time along with others (Demo for https://github.com/mi
 ## Video Demo
 [![Watch the video demo](live-website-annotate-video-preview.png)](https://www.youtube.com/watch?v=cfqQrH88f-o)
 
-## Example of two colloborators using Live Website Annotate on Wikipedia
+## Example of two collaborators using Live Website Annotate on Wikipedia
 
-![Example of two colloborators using Live Website Annotate on Wikipedia](live-website-annotate/lwa-screenshot-wiki.png)
+![Example of two collaborators using Live Website Annotate on Wikipedia](live-website-annotate/lwa-screenshot-wiki.png)
